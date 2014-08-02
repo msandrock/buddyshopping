@@ -26,8 +26,7 @@ router.post('/', function(req, res, next) {
     	}
     	var orderData = {
     		items: orderItems,
-    		total: orderTotal,
-    		publishedToBuddies: false
+    		total: orderTotal
     	};
     	data.createOrder(orderData, function(error, orderDocument) {
     		if (error) {

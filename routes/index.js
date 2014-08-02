@@ -138,10 +138,8 @@ router.get('/checkout-success', function(req, res, next) {
 		if (error) {
 			next(error);
 		} else {
-			data.markOrderPublishedToBuddies(orderId, function(error, nowMarkedPublished) {
-				res.render('checkout-success', {
-					publishToBuddies: nowMarkedPublished
-				});
+			res.render('checkout-success', {
+				order: order
 			});
 		}
 	});

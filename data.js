@@ -24,8 +24,7 @@ var orderSchema = mongoose.Schema({
     	quantity: Number,
     	linePrice: Number
 	})],
-	total : Number,
-	publishedToBuddies : Boolean
+	total : Number
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -172,15 +171,4 @@ exports.createOrder = function(data, callback) {
 exports.getOrder = function(orderId, callback) {
 	var Order = mongoose.model('Order', orderSchema);
 	Order.findOne({ _id : orderId }, callback);
-};
-
-//
-// marks an order as "published to buddies". The second parameter to the callback is true if now published,
-// false if already published before.
-//
-exports.markOrderPublishedToBuddies = function(orderId, callback) {
-	var Order = mongoose.model('Order', orderSchema);
-	Order.update({ _id : orderId }, {publishedToBuddies: true}, {}, function(error, numberAffected, rawResponse) {
-		callback(error, numberAffected != 0);
-	});
 };
