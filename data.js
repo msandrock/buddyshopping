@@ -17,6 +17,16 @@ var buddygroupSchema = mongoose.Schema({
 	memberSessionIds : { type: [String], index: true }
 });
 
+var orderSchema = mongoose.Schema({
+	items : [mongoose.Schema({
+    	name: String,
+    	unitPrice: Number,
+    	quantity: Number,
+    	linePrice: Number
+	})],
+	total : Number
+});
+
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
 	// yay!
@@ -145,4 +155,12 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 			});
 		}
 	});
+};
+
+//
+// creates a new order
+//
+exports.createOrder = function(data, callback) {
+	var Order = mongoose.model('Order', orderSchema);
+	Order.create(data, callback);
 };
