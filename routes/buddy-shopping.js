@@ -1,6 +1,7 @@
 var express = require('express');
 var config = require('../config.js');
 var data = require('../data.js');
+var ipAddress = require('../ipaddress.js').ipAddress;
 var url = require('url');
 var router = express.Router();
 
@@ -26,7 +27,10 @@ router.get('/', function(req, res, next) {
 				err.status = 500;
 				next(err);
 			} else {
-				res.render('buddy-shopping', {buddygroupId: buddygroupId});
+				res.render('buddy-shopping', {
+					buddygroupId: buddygroupId,
+					qrCodeUrl: 'http://' + ipAddress + ':1337/buddy-shopping?buddygroupId=' + buddygroupId
+				});
 			}
 		});
 	}

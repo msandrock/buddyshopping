@@ -24,7 +24,6 @@ div.container(style="width: 100%; padding-bottom: 40px; ")
 
 	script(type='text/javascript').
 		$(function() {
-			$('.buddygroupIdPanel').equalHeights();
 			$('#buddygroupIdPanelToggleButton').click(function() {
 				var firstPanelVisible = ($('#buddygroupIdFormPanel').css('display') != 'none');
 				if (firstPanelVisible) {
@@ -37,14 +36,12 @@ div.container(style="width: 100%; padding-bottom: 40px; ")
 			});
 			var qrCodeContainer = $('#qrCodeContainer')[0];
 			new QRCode(qrCodeContainer, {
-				text: "http://jindo.dev.naver.com/collie",
+				text: '#{qrCodeUrl}',
 				width: 128,
 				height: 128,
 				colorDark : "#000000",
 				colorLight : "#ffffff",
 				correctLevel : QRCode.CorrectLevel.H
 			});
-			// console.log($('#qrCodeContainer img'));
-			// $('#qrCodeContainer img').css('display', '');
-			// $('#qrCodeContainer img')[0].style.display = '';
+			$('.buddygroupIdPanel').equalHeights();
 		});
