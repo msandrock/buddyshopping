@@ -5,6 +5,7 @@ $(document).ready(function(){
 		
 		$(this).html("Bitte Warten!");
 		$(this).addClass('active');
+		element = this;
 		
 		$.post("/ajax_add_item_to_cart", { id: itemId } ,function(data){
 			
@@ -14,8 +15,8 @@ $(document).ready(function(){
 				toastr.error('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut');
 			}
 			
-			$(this).removeClass('active');
-			$(this).html("Zum Warenkorb hinzufügen");
+			$(element ).removeClass('active');
+			$(element ).html("Zum Warenkorb hinzufügen");
 			
 		}, 'json').error(function(){
 			console.log("errror");
