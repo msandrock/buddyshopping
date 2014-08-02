@@ -81,6 +81,7 @@ exports.getBuddyGroupId = function(sessionId, callback) {
 
     // Find the buddy group, where this session id is assigned
     Buddygroup.find({ memberSessionIds: sessionId }, callback);
+
 };
 
 //
@@ -88,6 +89,6 @@ exports.getBuddyGroupId = function(sessionId, callback) {
 //
 exports.joinBuddyGroup = function(sessionId, buddyGroupCode, callback) {
 
-    // Add the session id to the buddy group
+    // TODO: Add the session id to the buddy group
 
 };
