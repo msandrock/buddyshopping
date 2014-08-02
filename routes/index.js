@@ -51,7 +51,7 @@ router.get('/cart', function(req, res) {
 router.post('/ajax_add_item_to_cart', function(req, res) {
 
     // Store the item in the users session - try to load the cart from session
-    var id = req.query.id;
+    var id = req.body.id;
 
     cart.addItemToCart(req.session, id);
 
