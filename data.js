@@ -24,7 +24,8 @@ var orderSchema = mongoose.Schema({
     	quantity: Number,
     	linePrice: Number
 	})],
-	total : Number
+	total : Number,
+	publishedToBuddies : Boolean
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -163,4 +164,23 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 exports.createOrder = function(data, callback) {
 	var Order = mongoose.model('Order', orderSchema);
 	Order.create(data, callback);
+};
+
+//
+// fetches an order
+//
+exports.getOrder = function(orderId, callback) {
+	var Order = mongoose.model('Order', orderSchema);
+	Buddygroup.findOne({ _id : orderId }, callback);
+};
+
+//
+// marks an order as "published to buddies". The second parameter to the callback is true if now published,
+// false if already published before.
+//
+exports.markOrderPublishedToBuddies = function(orderId, callback) {
+	var Order = mongoose.model('Order', orderSchema);
+	Buddygroup.update({ _id : orderId }, {publishedToBuddies: true}, {}, function(error, numberAffected, rawResponse) {
+		callback(error, numberAffected != 0);
+	});
 };
