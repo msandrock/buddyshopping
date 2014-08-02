@@ -1,5 +1,4 @@
 var config = require('./config.js');
-var data = require('./data.js');
 var _ = require('underscore');
 var express = require('express');
 var mongodb = require('mongodb');
@@ -12,9 +11,6 @@ var bodyParser = require('body-parser');
 var app = express();
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
-// Set up the database connection
-data.connect(config.database.connectionString);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
