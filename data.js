@@ -73,13 +73,13 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 //
 // Returns the ID of the user's buddy group
 //
-exports.getBuddyGroupId = function(sessionId) {
+exports.getBuddyGroupId = function(sessionId, callback) {
 	
 };
 
 //
 // Joins a buddy group
 //
-exports.joinBuddyGroup = function(sessionId, buddyGroupCode) {
+exports.joinBuddyGroup = function(sessionId, buddyGroupCode, callback) {
 	
 };
