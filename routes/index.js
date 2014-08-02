@@ -129,4 +129,12 @@ router.post('/ajax_add_item_to_cart', function(req, res) {
 
 });
 
+//
+// shown after successful checkout
+//
+router.get('/checkout-success', function(req, res) {
+    res.render('checkout-success', {});
+
+});
+
 module.exports = router;
