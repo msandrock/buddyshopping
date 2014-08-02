@@ -26,7 +26,11 @@ html
 					var $popup = $('#buddyShoppingPopup');
 					var $mask = $('#buddyShoppingPopupMask');
 					$button.click(function() {
-						$popup.load('/buddy-shopping');
+						$popup.load('/buddy-shopping', function(){
+
+							createSocket();
+
+						});
 						$popup.removeClass('fadeOutDown').addClass('animated fadeInUp').css('display', '');
 						$mask.css('display', '');
 					});

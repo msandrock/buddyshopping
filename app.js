@@ -41,7 +41,7 @@ app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //socket io
-io.on('connection', websocketsHandler.setHandler);
+io.on('connection', websocketsHandler.handleConnect);
 
 app.use('/', routes);
 app.use('/users', users);
