@@ -5,7 +5,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-	res.render('test-geisse', {});
+	data.getBuddygroupId('foobar', function(buddygroupId) {
+		res.render('test-geisse', {buddygroupId: buddygroupId});
+	});
 });
 
 module.exports = router;
