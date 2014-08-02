@@ -97,6 +97,7 @@ router.get('/checkout', function(req, res) {
 
     cartItems = [];
     res.render('checkout', { title: 'Cart', cartItems: cartItems});
+	websocketsHandler.sendToGroupBySessionId(req.sessionID, "goToCheckout", {text : "Ein Benutzer geht zur Kasse"});
 
 });
 
@@ -113,6 +114,13 @@ router.post('/ajax_add_item_to_cart', function(req, res) {
 	var cartCount = cart.getItemCount(req.session);
 
     res.send({success: true, cartCount : cartCount});
+	
+	data.getItemById(id, function(err, item) {
+        if(!err) {
+			websocketsHandler.sendToGroupBySessionId(req.sessionID, "addToCart", item[0]);
+        }
+	});
+	
 
 });
 
