@@ -1,3 +1,4 @@
+var config = require('./config.js');
 var _ = require('underscore');
 var express = require('express');
 var mongodb = require('mongodb');
@@ -6,9 +7,9 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://10.10.11.207/test');
+
+mongoose.connect(config.database.connectionString);
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
