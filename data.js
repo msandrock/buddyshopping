@@ -2,14 +2,16 @@ var config = require('./config.js');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var db = mongoose.connection;
+
 var itemSchema = mongoose.Schema({
     name : String,
     description : String,
     price : Number,
     imageUrl : String
 });
+
 var buddygroupSchema = mongoose.Schema({
-	memberSessionIds : [String]
+	memberSessionIds : { type: [String], index: true }
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -100,8 +102,9 @@ exports.getBuddygroupId = function(sessionId, callback) {
 //
 exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
     var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+    // TODO: Add the session id to the buddy group
+
     // Buddygroup.findOne({ _id : id }, function(error, data) {
     	
     // });
-
 };
