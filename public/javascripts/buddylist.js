@@ -13,6 +13,10 @@ $(function() {
         $('#buddyListClosed').show();
     });
 
+    $('#clearBuddyList').click(function(e) {
+        buddyList.clearContent();
+    });
+
     //addMessage();
     //buddyList.clearContent();
     buddyList.loadContent();
