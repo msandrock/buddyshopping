@@ -33,6 +33,7 @@ function createSocket(){
 	});
 	
 	socket.on('chatMessage', function(msg) {
-		chat.handeChatMessage(msg);
+		console.log(msg);
+		buddyList.handeChatMessage(msg);
 	});
 }

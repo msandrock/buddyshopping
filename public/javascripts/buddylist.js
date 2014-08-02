@@ -19,11 +19,13 @@ $(function() {
 
     $('#postMessage').on('submit', function(e) {
 
-        var message = $('#messageText').val();
-
-        alert('TODO: Send message to websocket');
-
-        $('#messageText').val('');
+		if($('#messageText').val() != "") {
+			var message = $('#messageText').val();
+			socket.emit( "chatMessage",{text: message});
+			buddyList.myChatMessage(message);
+			$('#messageText').val('');
+		}
+        
         return false;
     });
 
@@ -98,6 +100,11 @@ function BuddyList() {
     this.goToCheckout = function(msg) {
         buddyList.addContent(this._goToCheckoutMessage(msg));
     }
+	
+		
+	this.handeChatMessage = function(msg) {
+		buddyList.addContent(this._chatMessage(msg));
+	}
 
     //
     // Clear the message list
@@ -107,6 +114,18 @@ function BuddyList() {
 
         localStorage.removeItem('listContent');
     };
+	
+	
+	this.myChatMessage = function(msgtext) {
+
+        var wrapper = document.createElement('div');
+		wrapper.className = "chat-entry chat-self-entry";
+        var title = document.createTextNode(msgtext);
+
+        wrapper.appendChild(title);
+
+		this.addContent(wrapper);
+    }
 
     //
     // Helper functions
@@ -167,6 +186,19 @@ function BuddyList() {
 
         return wrapper;
     }
+
+    this._chatMessage = function(msg) {
+
+        var wrapper = document.createElement('div');
+		wrapper.className = "chat-entry";
+        var title = document.createTextNode(msg.text);
+
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
+
+
 }
 
 var buddyList = new BuddyList();
