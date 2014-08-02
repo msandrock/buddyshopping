@@ -128,10 +128,13 @@ function BuddyList() {
         image.width = 40;
         image.height = 40;
         image.src = msg.imageUrl;
-        var title = document.createTextNode(msg.name);
+
+        var link = document.createElement('a');
+        link.href = '/details/'+msg._id;
+        link.appendChild(document.createTextNode(msg.name));
 
         wrapper.appendChild(image);
-        wrapper.appendChild(title);
+        wrapper.appendChild(link);
 
         return wrapper;
     }
@@ -143,10 +146,13 @@ function BuddyList() {
         image.width = 40;
         image.height = 40;
         image.src = msg.imageUrl;
-        var title = document.createTextNode(msg.name);
+
+        var link = document.createElement('a');
+        link.href = '/details/'+msg._id;
+        link.appendChild(document.createTextNode(msg.name + ' im Cart'));
 
         wrapper.appendChild(image);
-        wrapper.appendChild(title);
+        wrapper.appendChild(link);
 
         return wrapper;
     }

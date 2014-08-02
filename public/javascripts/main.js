@@ -17,7 +17,7 @@ function createSocket(){
 	});
 
 	socket.on('addToCart', function(msg) {
-		buddyList.addContent(msg.text);
+		buddyList.addToCart(msg);
 	});
 
 	socket.on('goToCheckout', function(msg) {
