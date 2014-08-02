@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 });
 router.post('/', function(req, res, next) {
 	function redirect() {
-		res.redirect(req.url);
+		res.redirect(req.referer || '/');
 	}
 	if (req.body.buddygroupId) {
 		data.joinBuddygroup(req.sessionID, req.body.buddygroupId, redirect)
