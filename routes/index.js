@@ -1,5 +1,6 @@
 var express = require('express');
 var data = require('../data.js');
+var cart = require('../cart.js');
 var router = express.Router();
 
 /* GET home page. */
@@ -34,11 +35,12 @@ router.get('/details/*', function(req, res) {
 //
 router.get('/ajax_add_item_to_cart', function(req, res) {
 
-    // Store the item in the users session
+    // Store the item in the users session - try to load the cart from session
+    var id = req.query.id;
 
-    console.log(req.query);
+    cart.addItemToCart(req.session, id);
 
-    res.send({"foo":"bar"});
+    res.send({success: true});
 
 });
 

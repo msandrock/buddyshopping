@@ -1,7 +1,5 @@
 var config = require('./config.js');
-var _ = require('underscore');
 var express = require('express');
-var mongodb = require('mongodb');
 var path = require('path');
 var favicon = require('static-favicon');
 var logger = require('morgan');
@@ -25,7 +23,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(session({secret: config.session.secret}));
+app.use(session({
+    secret: config.session.secret,
+    name: config.session.name,
+    resave: true,
+    saveUninitialized: true
+    }));
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
