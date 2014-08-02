@@ -12,6 +12,9 @@ var bodyParser = require('body-parser');
 var app = express();
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var test_geisse = require('./routes/test-geisse');
+var test_sandrock = require('./routes/test-sandrock');
+var test_vomhoff = require('./routes/test-vomhoff');
 
 // Set up the database connection
 data.connect(config.database.connectionString);
@@ -30,6 +33,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/test-geisse', test_geisse);
+app.use('/test-sandrock', test_sandrock);
+app.use('/test-vomhoff', test_vomhoff);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
