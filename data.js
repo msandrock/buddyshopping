@@ -79,21 +79,14 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 exports.getBuddygroupId = function(sessionId, callback) {
     var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
     Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
-    	if (error) {
-    		throw error;
+    	if (error || data) {
+    		callback(error, data._id);
+    	} else {
+    		var buddygroupId = crypto.randomBytes(12).toString('hex');
+    		Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
+    			callback(error, data ? data._id : null);
+    		});
     	}
-    	if (data) {
-    		callback(data);
-    		return;
-    	}
-    	var buddygroupId = crypto.randomBytes(5).toString('hex');
-    	Buddygroup.create({_id: buddygroupId}, function(error, record) {
-        	if (error) {
-        		throw error;
-        	} else {
-        		callback(buddygroupId);
-        	}
-    	});
     });
 };
 
