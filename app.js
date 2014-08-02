@@ -13,6 +13,7 @@ var users = require('./routes/users');
 var test_geisse = require('./routes/test-geisse');
 var test_sandrock = require('./routes/test-sandrock');
 var test_vomhoff = require('./routes/test-vomhoff');
+var buddy_shopping = require('./routes/buddy-shopping');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,7 +22,7 @@ app.set('view engine', 'jade');
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(session({
     secret: config.session.secret,
@@ -37,6 +38,7 @@ app.use('/users', users);
 app.use('/test-geisse', test_geisse);
 app.use('/test-sandrock', test_sandrock);
 app.use('/test-vomhoff', test_vomhoff);
+app.use('/buddy-shopping', buddy_shopping);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

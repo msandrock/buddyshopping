@@ -1,0 +1,11 @@
+
+h1
+	| Give this code to your friends and get a discount:
+div
+	| #{buddygroupId}
+
+h1
+	| or enter their code here:
+form(action="/buddy-shopping", method="post")
+	input(type="text", name="buddygroupId")
+	input(type="submit", value="Go!")
