@@ -13,6 +13,22 @@ html
 			link(rel='stylesheet', href='/stylesheets/toastr.css')
 			script(type='text/javascript', src='/javascripts/jquery-2.1.1.min.js')
 			script(type='text/javascript', src='/javascripts/toastr.min.js')
+			script(type='text/javascript').
+				$(function() {
+					var buddyShoppingPopupVisible = false;
+					$('#buddyShoppingButton').click(function() {
+						if (buddyShoppingPopupVisible) {
+							$('#buddyShoppingPopup').removeClass('fadeInUp').addClass('animated fadeOutDown');
+							$('#buddyShoppingPopup').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+								$('#buddyShoppingPopup').css('display', 'none');
+								buddyShoppingPopupVisible = false;
+							});
+						} else {
+							$('#buddyShoppingPopup').removeClass('fadeOutDown').addClass('animated fadeInUp').css('display', '');
+							buddyShoppingPopupVisible = true;
+						}
+					});
+				});
 		
 	body
 		header#header
@@ -28,6 +44,15 @@ html
 						ul.nav.navbar-nav.navbar-right
 							li
 								a(href='/login') Login
-
+		
 		block content
-	
+
+		div(style="position: relative")
+			div#buddyShoppingPopup(style="position: absolute; bottom: 0px; display: none; background-color: white; border: 1px solid black; width: 100%; -webkit-animation-duration: 0.2s; -moz-animation-duration: 0.2s; -ms-animation-duration: 0.2s; -o-animation-duration: 0.2s; animation-duration: 0.2s; height: 200px; ")
+				| FOO
+		
+		div#buddyShoppingButtonContainer
+			button#buddyShoppingButton
+				| Buddy Shopping
+
+				
