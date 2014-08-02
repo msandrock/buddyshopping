@@ -1,0 +1,12 @@
+{
+    "name": "Buddy-Shopping",
+    "version" : "0.0.1",
+    "scripts" : {
+        "start" : "app.js"
+    },
+    "dependencies" : {
+        "express"       : "*",
+        "socket.io"     : "*",
+        "underscore"    : ""
+    }
+}
