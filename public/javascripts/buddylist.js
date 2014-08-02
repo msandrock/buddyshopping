@@ -17,17 +17,18 @@ $(function() {
         buddyList.clearContent();
     });
 
-    //addMessage();
-    //buddyList.clearContent();
+    $('#postMessage').on('submit', function(e) {
+
+        var message = $('#messageText').val();
+
+        alert('TODO: Send message to websocket');
+
+        $('#messageText').val('');
+        return false;
+    });
+
     buddyList.loadContent();
 });
-
-// Nur zum testen
-//var x = 0;
-//function addMessage() {
-//    var bl = new BuddyList();
-//    window.setTimeout(function() { bl.addContent(++x + ' My message'); }, 2000);
-//}
 
 function BuddyList() {
 
@@ -82,6 +83,22 @@ function BuddyList() {
         }
     };
 
+    this.joined = function(msg) {
+        buddyList.addContent(this._joinedMessage(msg));
+    }
+
+    this.visitItem = function(msg) {
+        buddyList.addContent(this._visitItemMessage(msg));
+    }
+
+    this.addToCart = function(msg) {
+        buddyList.addContent(this._addToCartMessage(msg));
+    }
+
+    this.goToCheckout = function(msg) {
+        buddyList.addContent(this._goToCheckoutMessage(msg));
+    }
+
     //
     // Clear the message list
     //
@@ -90,6 +107,66 @@ function BuddyList() {
 
         localStorage.removeItem('listContent');
     };
+
+    //
+    // Helper functions
+    //
+
+    this._joinedMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var title = document.createTextNode(msg.text);
+
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
+
+    this._visitItemMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var image = document.createElement('img');
+        image.width = 40;
+        image.height = 40;
+        image.src = msg.imageUrl;
+
+        var link = document.createElement('a');
+        link.href = '/details/'+msg._id;
+        link.appendChild(document.createTextNode(msg.name));
+
+        wrapper.appendChild(image);
+        wrapper.appendChild(link);
+
+        return wrapper;
+    }
+
+    this._addToCartMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var image = document.createElement('img');
+        image.width = 40;
+        image.height = 40;
+        image.src = msg.imageUrl;
+
+        var link = document.createElement('a');
+        link.href = '/details/'+msg._id;
+        link.appendChild(document.createTextNode(msg.name + ' im Cart'));
+
+        wrapper.appendChild(image);
+        wrapper.appendChild(link);
+
+        return wrapper;
+    }
+
+    this._goToCheckoutMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var title = document.createTextNode(msg.text);
+
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
 }
 
 var buddyList = new BuddyList();

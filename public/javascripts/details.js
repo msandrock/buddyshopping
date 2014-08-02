@@ -3,6 +3,7 @@ $(document).ready(function(){
 	$('.cart').click(function(e){
 		e.preventDefault();
 		
+		$(this).width($(this).width());
 		$(this).html("Bitte Warten!");
 		$(this).addClass('active');
 		element = this;

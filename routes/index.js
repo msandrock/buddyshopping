@@ -67,7 +67,7 @@ router.get('/cart', function(req, res) {
         // Add quantity from cart items
         cartItems = _.map(items, function(item) {
             // Find the cart items quantity
-            var cartItem = _.find(cartItems, function(i) { return i.itemId = item._id; })
+            var cartItem = _.find(cartItems, function(i) { return i.itemId == item._id; })
             // Construct a new object
             return {
                 _id : item._id,
@@ -96,7 +96,11 @@ router.get('/checkout', function(req, res) {
 
 
     cartItems = [];
-    res.render('checkout', { title: 'Cart', cartItems: cartItems});
+    res.render('checkout', {
+    	title: 'Cart',
+    	cartItems: cartItems,
+    	cartCount: cart.getItemCount(req.session)
+    });
 	websocketsHandler.sendToGroupBySessionId(req.sessionID, "goToCheckout", {text : "Ein Benutzer geht zur Kasse"});
 
 });

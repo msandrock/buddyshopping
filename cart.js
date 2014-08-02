@@ -53,8 +53,19 @@ exports.getItemCount = function (session){
 	var cart = session.cart;
 
     if(cart) {
-		return cart.length;
+    	var result = 0;
+    	for (var i in cart) {
+    		result += cart[i].quantity;
+    	}
+		return result;
 	} else {
 		return 0;
 	}
+}
+
+//
+// Removes all items from the cart.
+//
+exports.clearCart = function(session) {
+	delete session.cart;
 }
