@@ -1,0 +1,48 @@
+doctype html
+html
+	head
+		block htmlHead
+			title= title
+			meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+			link(rel='stylesheet', href='/stylesheets/style.css')
+			link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+			link(rel='stylesheet', href='/stylesheets/main.css')
+			link(rel='stylesheet', href='/stylesheets/animate.css')
+			link(rel='stylesheet', href='/stylesheets/style.css')
+			link(rel='stylesheet', href='/stylesheets/responsive.css')
+			link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
+			link(rel='stylesheet', href='/stylesheets/toastr.css')
+			script(type='text/javascript', src='/javascripts/jquery-2.1.1.min.js')
+			script(type='text/javascript', src='/javascripts/fastclick.js')
+			script(type='text/javascript', src='/javascripts/buddylist.js')
+			script(type='text/javascript').
+				// Enable fastclick. This must happen on-ready, but before registering other click handlers.
+				$(function() {
+					FastClick.attach(document.body);
+				});
+			script(type='text/javascript', src='/javascripts/toastr.min.js')
+			script(type='text/javascript', src='/javascripts/jquery.equalheights.min.js')
+			script(type='text/javascript', src='/javascripts/qrcode.js')
+			script(type='text/javascript', src='/socket.io/socket.io.js')
+			script(type='text/javascript').
+				$(function() {
+					var $button = $('#buddyShoppingButton');
+					var $popup = $('#buddyShoppingPopup');
+					var $mask = $('#buddyShoppingPopupMask');
+					$button.click(function() {
+						$popup.load('/buddy-shopping');
+						$popup.removeClass('fadeOutDown').addClass('animated fadeInUp').css('display', '');
+						$mask.css('display', '');
+					});
+					$mask.click(function() {
+						$popup.removeClass('fadeInUp').addClass('animated fadeOutDown');
+						$popup.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+							$popup.css('display', 'none');
+						});
+						$mask.css('display', 'none');
+					});
+				});
+
+	body
+		block content
+		script(type='text/javascript', src='/javascripts/main.js')
