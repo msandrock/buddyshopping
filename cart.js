@@ -62,3 +62,10 @@ exports.getItemCount = function (session){
 		return 0;
 	}
 }
+
+//
+// Removes all items from the cart.
+//
+exports.clearCart = function(session) {
+	delete session.cart;
+}

@@ -96,7 +96,11 @@ router.get('/checkout', function(req, res) {
 
 
     cartItems = [];
-    res.render('checkout', { title: 'Cart', cartItems: cartItems});
+    res.render('checkout', {
+    	title: 'Cart',
+    	cartItems: cartItems,
+    	cartCount: cart.getItemCount(req.session)
+    });
 	websocketsHandler.sendToGroupBySessionId(req.sessionID, "goToCheckout", {text : "Ein Benutzer geht zur Kasse"});
 
 });
