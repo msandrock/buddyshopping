@@ -7,6 +7,9 @@ var itemSchema = mongoose.Schema({
     price : Number,
     imageUrl : String
 });
+var buddygroupSchema = mongoose.Schema({
+	memberSessionIds : [String]
+});
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
@@ -66,3 +69,17 @@ createItem('Landfleisch', 'Landfleisch Pur Rinderherzen&Nudeln', 89, '/images/ho
 createItem('Einfaches Produkt', 'Beschreibung für Produkt 5', 1785, '/images/home/product5.jpg');
 createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse', 167, '/images/home/product6.jpg');
 */
+
+//
+// Returns the ID of the user's buddy group
+//
+exports.getBuddyGroupId = function(sessionId) {
+	
+};
+
+//
+// Joins a buddy group
+//
+exports.joinBuddyGroup = function(sessionId, buddyGroupCode) {
+	
+};
