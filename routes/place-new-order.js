@@ -4,6 +4,7 @@ var data = require('../data.js');
 var ipAddress = require('../ipaddress.js').ipAddress;
 var cart = require('../cart.js');
 var _ = require('underscore');
+var websocketsHandler = require('../websockets-handler');
 var router = express.Router();
 
 router.post('/', function(req, res, next) {
@@ -32,6 +33,7 @@ router.post('/', function(req, res, next) {
     		if (error) {
     			next(error);
     		} else {
+    			websocketsHandler.sendToGroupBySessionId(req.sessionID, "placeNewOrder", orderDocument);
     			cart.clearCart(req.session);
     			res.redirect('/checkout-success?orderId=' + orderDocument._id);
     		}
