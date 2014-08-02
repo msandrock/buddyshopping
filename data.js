@@ -2,7 +2,7 @@ var config = require('./config.js');
 var mongoose = require('mongoose');
 var db = mongoose.connection;
 var itemSchema = mongoose.Schema({
-    name: String,
+    name : String,
     description : String,
     price : Number,
     imageUrl : String
@@ -26,7 +26,17 @@ exports.getItems = function(callback) {
     var Item = mongoose.model('Item', itemSchema);
 
     Item.find(callback);
-}
+};
+
+//
+// Return a single item by id
+//
+exports.getItemById = function(id, callback) {
+
+    var Item = mongoose.model('Item', itemSchema);
+
+    Item.find({ _id : id }, callback);
+};
 
 //
 // Adds a new item to the collection

@@ -4,28 +4,29 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-
     // Load data from db and pass it to the view
     data.getItems(function(err, items) {
-      if(!err) {
-        res.render('index', { title: 'Express', products: items});
-      }
+        if(!err) {
+            res.render('index', { title: 'Express', products: items});
+        } else {
+            console.log(err);
+        }
     });
-    
+
 });
 
 router.get('/details/*', function(req, res) {
-    
-        var testProduct = {
-            _id: 1,
-            name : "Leichte Jacke",
-            description : "Dies ist eine Leicht Jacke",
-            price : 1,
-            imageUrl : "/images/home/product2.jpg"
-        };
+    // Extrat the item id from the url
+    var id = req.params[0];
 
-    
-  res.render('details', { title: 'Express', product: testProduct});
+    data.getItemById(id, function(err, item) {
+        if(!err) {
+            res.render('details', { title: 'Express', product: item});
+        } else {
+            console.log(err);
+        }
+    });
+
 });
 
 module.exports = router;
