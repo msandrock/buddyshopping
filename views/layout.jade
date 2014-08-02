@@ -14,6 +14,7 @@ html
 			link(rel='stylesheet', href='/stylesheets/toastr.css')
 			script(type='text/javascript', src='/javascripts/jquery-2.1.1.min.js')
 			script(type='text/javascript', src='/javascripts/fastclick.js')
+			script(type='text/javascript', src='/javascripts/bootstrap.min.js')
 			script(type='text/javascript', src='/javascripts/buddylist.js')
 			script(type='text/javascript').
 				// Enable fastclick. This must happen on-ready, but before registering other click handlers.
@@ -54,7 +55,14 @@ html
 					div.navbar-header
 						a.navbar-brand(href="/")
 							| BuddyShopping
-					div.navbar-collapse.collapse
+						button.navbar-toggle(type="button", data-toggle="collapse", data-target="#header-navbar-collapse")
+							span.sr-only
+								| Toggle navigation
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
+						
+					div.navbar-collapse.collapse#header-navbar-collapse
 						ul.nav.navbar-nav.navbar-right
 							li
 								a(href='/login') Login
