@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/details/*', function(req, res) {
-    // Extrat the item id from the url
+    // Extract the item id from the url
     var id = req.params[0];
 
     data.getItemById(id, function(err, item) {
@@ -27,6 +27,21 @@ router.get('/details/*', function(req, res) {
             console.log(err);
         }
     });
+});
+
+router.get('/cart', function(req, res) {
+    // Get all cart items and return them to the view
+
+    cartItems = cart.getCartItems(req.session);
+
+    // Get all cart items from the database
+
+    console.log(cartItems);
+
+
+
+    cartItems = [];
+    res.render('cart', { title: 'Cart', cartItems: cartItems});
 
 });
 
