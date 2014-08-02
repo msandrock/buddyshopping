@@ -59,8 +59,10 @@ router.post('/ajax_add_item_to_cart', function(req, res) {
     var id = req.body.id;
 
     cart.addItemToCart(req.session, id);
+	
+	var cartCount = cart.getItemCount(req.session);
 
-    res.send({success: true});
+    res.send({success: true, cartCount : cartCount});
 
 });
 
