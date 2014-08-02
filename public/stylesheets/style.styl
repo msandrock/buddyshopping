@@ -7,14 +7,14 @@ a
 #details > div
 	margin: 0 20px;
 
-.product-information p 
+.product-information p
     float: left;
     width: 100%;
 
-header 
+header
     margin-bottom: 40px;
 
-.checkout 
+.checkout
 	margin-top: 50px;
 
 .shopper-informations
@@ -40,3 +40,50 @@ header
 	bottom: 0px;
 	left: 0px;
 	right: 0px;
+
+#buddyListClosed
+    display: block;
+    position: fixed;
+    padding: 0 6px 6px 6px;
+    top: 100px;
+    right: 0;
+    background-color: #ddd;
+    width: 20px;
+    height: 400px;
+    -webkit-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
+    -moz-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
+    box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
+    h4
+        -webkit-transform: rotate(270deg);
+        -moz-transform: rotate(270deg);
+        -o-transform: rotate(270deg);
+        writing-mode: lr-tb;
+        white-space: nowrap;
+        height: 140px;
+        width: 130px;
+
+#buddyListOpen
+    display: none;
+    position: fixed;
+    padding: 0 6px 6px 6px;
+    top: 100px;
+    right: 0;
+    background-color: #ddd;
+    width: 240px;
+    height: 400px
+    -webkit-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
+    -moz-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
+    box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
+
+#buddyMessages
+    height: 360px;
+    overflow: auto;
+    padding: 0;
+    li
+        margin: 0;
+        padding: 0;
+        border-bottom: 1px dotted #ccc;
+
+#qrCodeContainer img
+	margin-top: 20px;
+	display: inline !important;
