@@ -4,13 +4,11 @@
 //
 $(function() {
     $('#openBuddyList').click(function(e) {
-        $('#buddyListClosed').hide();
-        $('#buddyListOpen').show();
+        buddyList.openList();
     });
 
     $('#closeBuddyList').click(function(e) {
-        $('#buddyListOpen').hide();
-        $('#buddyListClosed').show();
+        buddyList.closeList();
     });
 
     $('#clearBuddyList').click(function(e) {
@@ -31,6 +29,16 @@ $(function() {
 });
 
 function BuddyList() {
+
+    this.openList = function() {
+        $('#buddyListClosed').hide();
+        $('#buddyListOpen').show();
+    };
+
+    this.closeList = function() {
+        $('#buddyListOpen').hide();
+        $('#buddyListClosed').show();
+    };
 
     //
     // Loads the current list content from local storage and displays it in the buddy list
@@ -70,6 +78,9 @@ function BuddyList() {
             // Append
             $('#buddyMessages')[0].appendChild(listElement);
         }
+
+        // Open the list, in case it is currently hidden
+        this.openList();
 
         var listContent = $('#buddyMessages').html();
 
