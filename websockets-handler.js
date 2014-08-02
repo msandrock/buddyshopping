@@ -43,12 +43,15 @@ exports.handleConnect = function (socket) {
 		});
 		
 		
-		
-		
-		
 		socket.on('chatMessage', function(msg) {
 			console.log(msg);
 			sendToGroupBySessionId(sessionId, "chatMessage", msg);
+		});
+		
+		
+		
+		socket.on("placeNewOrder", function(msg) {
+			sendToGroupBySessionId(sessionId, "placeNewOrder", msg);
 		});
 		
 		
