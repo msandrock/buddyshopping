@@ -20,7 +20,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/details/*', function(req, res) {
-    // Extrat the item id from the url
+    // Extract the item id from the url
     var id = req.params[0];
 	
 	var cartCount = cart.getItemCount(req.session);
@@ -32,6 +32,21 @@ router.get('/details/*', function(req, res) {
             console.log(err);
         }
     });
+});
+
+router.get('/cart', function(req, res) {
+    // Get all cart items and return them to the view
+
+    cartItems = cart.getCartItems(req.session);
+
+    // TODO: Get all cart items from the database
+
+    console.log(cartItems);
+
+
+
+    cartItems = [];
+    res.render('cart', { title: 'Cart', cartItems: cartItems});
 
 });
 
@@ -41,7 +56,7 @@ router.get('/details/*', function(req, res) {
 router.post('/ajax_add_item_to_cart', function(req, res) {
 
     // Store the item in the users session - try to load the cart from session
-    var id = req.query.id;
+    var id = req.body.id;
 
     cart.addItemToCart(req.session, id);
 

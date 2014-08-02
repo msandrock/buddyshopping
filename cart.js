@@ -28,6 +28,12 @@ exports.addItemToCart = function(session, itemId) {
     //console.log(session.cart);
 }
 
+exports.getCartItems = function(session) {
+    var cart = session.cart;
+
+    return cart ? cart : [];
+}
+
 //
 // Helper to create a new cart item element
 //
