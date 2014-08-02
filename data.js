@@ -1,14 +1,16 @@
 var config = require('./config.js');
 var mongoose = require('mongoose');
 var db = mongoose.connection;
+
 var itemSchema = mongoose.Schema({
     name : String,
     description : String,
     price : Number,
     imageUrl : String
 });
+
 var buddygroupSchema = mongoose.Schema({
-	memberSessionIds : [String]
+	memberSessionIds : { type: [String], index: true }
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -73,13 +75,19 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 //
 // Returns the ID of the user's buddy group
 //
-exports.getBuddyGroupId = function(sessionId) {
-	
+exports.getBuddyGroupId = function(sessionId, callback) {
+
+    var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+
+    // Find the buddy group, where this session id is assigned
+    Buddygroup.find({ memberSessionIds: sessionId }, callback);
 };
 
 //
 // Joins a buddy group
 //
-exports.joinBuddyGroup = function(sessionId, buddyGroupCode) {
-	
+exports.joinBuddyGroup = function(sessionId, buddyGroupCode, callback) {
+
+    // Add the session id to the buddy group
+
 };
