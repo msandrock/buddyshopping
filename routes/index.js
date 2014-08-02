@@ -1,5 +1,6 @@
 var express = require('express');
 var data = require('../data.js');
+var cart = require('../cart.js');
 var router = express.Router();
 
 /* GET home page. */
@@ -21,7 +22,7 @@ router.get('/details/*', function(req, res) {
 
     data.getItemById(id, function(err, item) {
         if(!err) {
-            res.render('details', { title: 'Express', product: item});
+            res.render('details', { title: 'Express', item: item[0]});
         } else {
             console.log(err);
         }
@@ -32,13 +33,14 @@ router.get('/details/*', function(req, res) {
 //
 // Adds an item to the users cart; Expects the item id as a parameter ("id")
 //
-router.get('/ajax_add_item_to_cart', function(req, res) {
+router.post('/ajax_add_item_to_cart', function(req, res) {
 
-    // Store the item in the users session
+    // Store the item in the users session - try to load the cart from session
+    var id = req.query.id;
 
-    console.log(req.query);
+    cart.addItemToCart(req.session, id);
 
-    res.send({"foo":"bar"});
+    res.send({success: true});
 
 });
 

@@ -9,7 +9,6 @@ block content
 						div.col-sm-4
 							div.view-product
 								img(src="/images/product-details/1.jpg")
-								h3 | Zoom
 							div#similar-product.carousel.slide(data-ride="carousel")
 								div.carousel-inner
 									div.item.active
@@ -30,14 +29,57 @@ block content
 									i.fa.fa-angle-right
 						div.col-sm-8
 							div.product-information
-								h2 Jacke was weiß ich
-								p ProductNummer: 12345
-								img(src="/images/product-details/rating.png")
+								h2 #{item.name}
+								p ProductNummer: #{item._id}
+								p
+									img(src="/images/product-details/rating.png")
 								span
-									span 9000€
-									input(type="text", value="9000")
+									p
+										span #{item.price} €
+									
+									p
+										label Menge
+										input(type="text", value="1")
+									p
+										button.btn.btn-default.cart(type="button") 
+											i.fa.fa-shopping-cart
+											|  Zum Warenkorb hinzufügen
+			div.row
+				div.category-tab.shop-details-tab
+					div.col-sm-12
+						ul.nav.nav-tabs
+							li.active
+								a(href="#details", data-toggle="tab") Details
+							li
+								a(href="#reviews", data-toggle="tab") Review
+					div.tab-content
+						div.tab-pane.fade.active.in#details
+							div
+								h3 Beschreibung
+								p	#{item.description}
+						div.tab-pane.fade#reviews
+							div.col-sm-12
+								ul
+									li
+										a
+											i.fa.fa-user
+											| Testi Testmann
+									li
+										a
+											i.fa.fa-clock-o
+											| 16:10
+									li
+										a
+											i.fa.fa-calendar-o
+											| 02.08.2014
+								p Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+
+					
 
 
 	script(type='text/javascript', src='/javascripts/jquery.prettyPhoto.js')
 	script(type='text/javascript', src='/javascripts/bootstrap.min.js')
+	script(type='text/javascript', src='/javascripts/details.js')
+	script.
+		var itemId = "#{item._id}"
 	

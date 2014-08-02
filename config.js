@@ -3,5 +3,6 @@ exports.database = {
 };
 
 exports.session = {
+    "name" : "buddyshopping",
     "secret" : "1234567890QWERTY"
 }
