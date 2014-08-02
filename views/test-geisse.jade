@@ -1,16 +1,7 @@
 extends layout
 
-block append htmlHead
-	script(type='text/javascript', src='/javascripts/qrcode.js')
-	script(type='text/javascript').
-		$(function() {
-			new QRCode(document.getElementById("qrcode"), "http://9gag.com");
-		});
-
 block content
-	section
-		| div(id='qrcode')
-		| #{buddygroupId}
+	#{ipAddress}
 
 		
 		
