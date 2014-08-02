@@ -2,6 +2,8 @@ var config = require('./config.js');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var _ = require('underscore');
+var websocketsHandler = require('./websockets-handler');
+
 var db = mongoose.connection;
 
 var itemSchema = mongoose.Schema({
@@ -102,6 +104,19 @@ exports.getBuddygroupId = function(sessionId, callback) {
 };
 
 //
+// Returns the ID of the user's buddy group
+//
+exports.ifIsBodyGroupJoined = function(sessionId, callback) {
+	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+	Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
+		if(data)
+			callback(error, data._id, true);
+		else
+			callback(error, null, false);
+	});
+};
+
+//
 // Joins a buddy group
 //
 exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
@@ -120,6 +135,9 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 				} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
 					Buddygroup.update({_id: buddygroupId}, {$push: {memberSessionIds: sessionId}}, {}, function(error, numberAffected, rawResponse) {
 						callback(error);
+						if(!error) {
+							websocketsHandler.sendToGroup(buddygroupId, "joined", {text: "Ein Benutzer ist beigetretten"});
+						}
 					});
 				} else {
 					callback(null);

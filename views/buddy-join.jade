@@ -1,0 +1,10 @@
+extends autosubmit-layout
+
+block content
+	form#buddyJoinForm(method="post", action="/buddy-shopping", style="visibility: hidden")
+		input(type="text", name="buddygroupId", value="#{buddygroupId}")
+		input(type="submit")
+	script(type='text/javascript').
+		$(function() {
+			$('#buddyJoinForm').submit();
+		});

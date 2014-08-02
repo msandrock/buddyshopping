@@ -30,11 +30,7 @@ html
 					var $popup = $('#buddyShoppingPopup');
 					var $mask = $('#buddyShoppingPopupMask');
 					$button.click(function() {
-						$popup.load('/buddy-shopping', function(){
-
-							createSocket();
-
-						});
+						$popup.load('/buddy-shopping');
 						$popup.removeClass('fadeOutDown').addClass('animated fadeInUp').css('display', '');
 						$mask.css('display', '');
 					});
@@ -48,49 +44,5 @@ html
 				});
 
 	body
-		header#header
-			div.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
-				div.container
-					div.navbar-header
-						a.navbar-brand(href="/")
-							| BuddyShopping
-					div.navbar-collapse collapse
-						ul.nav.navbar-nav
-							li
-								a(href='/') Home
-						ul.nav.navbar-nav.navbar-right
-							li
-								a(href='/login') Login
-							li
-								a(href='/cart')
-									i.fa.fa-shopping-cart
-									if cartCount != 0 && cartCount != undefined
-										|  Warenkorb (
-										span#count-cart #{cartCount}
-										| )
-									else
-										|  Warenkorb (
-										span#count-cart 0
-										| )
-
 		block content
-
-		div(style="position: relative")
-			div#buddyShoppingPopup(style="display: none;")
-
-		div#buddyShoppingPopupMask(style="display: none;")
-
-		div#buddyShoppingButtonContainer
-			button#buddyShoppingButton.btn.btn-block
-				| Buddy Shopping
-
-		div#buddyListOpen
-			h4 My buddys&nbsp;
-				a#closeBuddyList(href='#') Close
-			ul#buddyMessages
-
-		div#buddyListClosed
-			h4 My buddys&nbsp;
-				a#openBuddyList(href='#') Open
-
 		script(type='text/javascript', src='/javascripts/main.js')
