@@ -29,6 +29,6 @@ function createSocket(){
 	});
 
 	socket.on('reconnect', function(msg) {
-		buddyList.reconnect(msg);
+
 	});
 }

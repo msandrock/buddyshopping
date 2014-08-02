@@ -98,10 +98,6 @@ function BuddyList() {
         buddyList.addContent(this._goToCheckoutMessage(msg));
     }
 
-    this.reconnect = function(msg) {
-        buddyList.addContent(this._reconnectMessage(msg))
-    }
-
     //
     // Clear the message list
     //
@@ -156,16 +152,6 @@ function BuddyList() {
     }
 
     this._goToCheckoutMessage = function(msg) {
-
-        var wrapper = document.createElement('span');
-        var title = document.createTextNode(msg.text);
-
-        wrapper.appendChild(title);
-
-        return wrapper;
-    }
-
-    this._reconnectMessage = function(msg) {
 
         var wrapper = document.createElement('span');
         var title = document.createTextNode(msg.text);
