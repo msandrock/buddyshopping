@@ -1,4 +1,5 @@
 var express = require('express');
+var _ = require('underscore');
 var data = require('../data.js');
 var cart = require('../cart.js');
 var router = express.Router();
@@ -31,18 +32,47 @@ router.get('/details/*', function(req, res) {
 
 router.get('/cart', function(req, res) {
     // Get all cart items and return them to the view
+    var cartItems = cart.getCartItems(req.session);
+    // Get all corresponding items from the database
+    var ids = _.pluck(cartItems, 'itemId');
 
-    cartItems = cart.getCartItems(req.session);
+    data.getItemsById(ids, function(err, items) {
 
-    // TODO: Get all cart items from the database
+        var viewItems = [];
 
-    console.log(cartItems);
+        for(var i = 0 ; i < items.length ; i++) {
+            // Construct a new object
+            var viewItem = {
+                _id : items[i]._id,
+                name : items[i].name,
+                description : items[i].description,
+                imageUrl : items[i].imageUrl,
+                quantity : 5
+            };
 
+            viewItems.push(viewItem);
+        }
 
+        // Add quantity from cart items
+        cartItems = _.map(items, function(item) {
+            // Find the cart items quantity
+            var cartItem = _.find(cartItems, function(i) { return i.itemId = item._id; })
+            // Construct a new object
+            return {
+                _id : item._id,
+                name : item.name,
+                description : item.description,
+                price : item.price,
+                imageUrl : item.imageUrl,
+                quantity : cartItem.quantity
+            };
+        });
 
-    cartItems = [];
-    res.render('cart', { title: 'Cart', cartItems: cartItems});
+        console.log(cartItems);
 
+        res.render('cart', { title: 'Cart', cartItems: cartItems});
+
+    });
 });
 
 //

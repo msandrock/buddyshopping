@@ -12,11 +12,11 @@ block content
 								div.product-image-wrapper
 									div.single-products
 										div.productinfo.text-center
-											a(href='/details/' + product._id).btn.btn-default.add-to-cart
-												img(src=product.imageUrl)
-											h2 #{product.price} €
-											p #{product.name}
-											a(href='/details/' + product._id).btn.btn-default.add-to-cart
+											a(href='/details/' + cartItem._id).btn.btn-default.add-to-cart
+												img(src=cartItem.imageUrl)
+											h2 #{cartItem.price} €
+											p #{cartItem.name}
+											a(href='/details/' + cartItem._id).btn.btn-default.add-to-cart
 												i.fa.fa-shopping-cart
 												| Details
 									div.choose

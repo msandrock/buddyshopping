@@ -45,6 +45,16 @@ exports.getItemById = function(id, callback) {
 };
 
 //
+// Return all items in the id array
+//
+exports.getItemsById = function(ids, callback) {
+
+    var Item = mongoose.model('Item', itemSchema);
+
+    Item.find({ _id : { $in: ids }}, callback);
+};
+
+//
 // Adds a new item to the collection
 //
 function createItem(name, description, price, imageUrl) {
