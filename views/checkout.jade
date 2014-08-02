@@ -1,0 +1,30 @@
+extends layout
+
+block content
+	.container
+		section.shopper-informations
+			.row
+				.col-sm-12.shopper-info
+					p Versandinformationen
+					form
+						input(name="forename", placeholder="Vorname")
+						input(name="name", placeholder="Nachname")
+						input(name="mail",placeholder="E-Mail")
+						input(name="street",placeholder="Straße")
+						input(name="zip",placeholder="Postleitzahl")
+						input(name="city",placeholder="Stadt")
+						
+
+
+		section.review-payment
+			.row
+				.col-sm-12
+					h2 Review & Payment
+			.row
+				.col-sm-12
+					include elements/products
+
+		section.checkout
+			.row
+				.col-sm-12
+					button.btn.btn-success.pull-right Kostenpflichtig bestellen

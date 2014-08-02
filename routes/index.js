@@ -50,6 +50,22 @@ router.get('/cart', function(req, res) {
 
 });
 
+router.get('/checkout', function(req, res) {
+    // Get all cart items and return them to the view
+
+    cartItems = cart.getCartItems(req.session);
+
+    // TODO: Get all cart items from the database
+
+    console.log(cartItems);
+
+
+
+    cartItems = [];
+    res.render('checkout', { title: 'Cart', cartItems: cartItems});
+
+});
+
 //
 // Adds an item to the users cart; Expects the item id as a parameter ("id")
 //
