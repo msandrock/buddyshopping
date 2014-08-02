@@ -45,7 +45,7 @@ router.get('/cart', function(req, res) {
 
     data.getItemsById(ids, function(err, items) {
 
-        var viewItems = [];
+        /*var viewItems = [];
 
         for(var i = 0 ; i < items.length ; i++) {
             // Construct a new object
@@ -58,7 +58,7 @@ router.get('/cart', function(req, res) {
             };
 
             viewItems.push(viewItem);
-        }
+        }*/
 
         // Add quantity from cart items
         cartItems = _.map(items, function(item) {
@@ -71,12 +71,29 @@ router.get('/cart', function(req, res) {
                 description : item.description,
                 price : item.price,
                 imageUrl : item.imageUrl,
-                quantity : cartItem.quantity
+                quantity : cartItem.quantity,
+				total : item.price * cartItem.quantity
             };
         });
 
         res.render('cart', { title: 'Cart', cartItems: cartItems, cartCount: cartCount});
     });
+});
+
+router.get('/checkout', function(req, res) {
+    // Get all cart items and return them to the view
+
+    cartItems = cart.getCartItems(req.session);
+
+    // TODO: Get all cart items from the database
+
+    console.log(cartItems);
+
+
+
+    cartItems = [];
+    res.render('checkout', { title: 'Cart', cartItems: cartItems});
+
 });
 
 //
