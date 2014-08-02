@@ -1,12 +1,13 @@
+var config = require('./config.js');
 var mongoose = require('mongoose');
 var db = mongoose.connection;
 var connected = false;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-  // yay!
-  console.log('Successfully connected to database');
-  connected = true;
+    // yay!
+    console.log('Successfully connected to database');
+    connected = true;
 });
 
 //
@@ -14,12 +15,11 @@ db.once('open', function callback () {
 //
 exports.connect = function(connectionString) {
 
-  if(!connected) {
-    mongoose.connect(connectionString);
-  } else {
-    console.log('Already connected to database');
-  }
-
+    if(!connected) {
+        mongoose.connect(connectionString);
+    } else {
+        console.log('Already connected to database');
+    }
 }
 
 //
@@ -27,11 +27,11 @@ exports.connect = function(connectionString) {
 //
 exports.close = function() {
 
-  if(connected) {
-    mongoose.close();
-  } else {
-    console.log('Connection is already closed');
-  }
+    if(connected) {
+        mongoose.close();
+    } else {
+        console.log('Connection is already closed');
+    }
 }
 
 
@@ -50,12 +50,12 @@ var Item = mongoose.model('Item', itemSchema);
 //
 exports.getItems = function(callback) {
 
-  if(connected) {
-    Item.find(callback);
-  } else {
-    // Not connected to database
-    err = "Not connected to database";
-  }
+    if(connected) {
+        Item.find(callback);
+    } else {
+        // Not connected to database
+        err = "Not connected to database";
+    }
 }
 
 /*
@@ -71,20 +71,19 @@ console.log(kittens)
 //
 function createItem(name, description, price, imageUrl) {
 
-  var item = new Item({
-    name : name,
-    description : description,
-    price : price,
-    imageUrl : imageUrl
-  });
+    var item = new Item({
+        name : name,
+        description : description,
+        price : price,
+        imageUrl : imageUrl
+    });
 
-  item.save(function (err, item) {
-    if (err) return console.error(err);
+    item.save(function (err, item) {
+        if (err) return console.error(err);
 
-    // Possibly do something with item here, after it was saved
-    console.log('Successfully saved item ' + item.name);
-
-  });
+        // Possibly do something with item here, after it was saved
+        console.log('Successfully saved item ' + item.name);
+    });
 }
 
 /*
