@@ -13,7 +13,18 @@ function createSocket(){
 	socket = io.connect("/");
 
 	socket.on('visitItem', function(msg) {
-		buddyList.addContent(msg.text);
+
+		var wrapper = document.createElement('span');
+		var image = document.createElement('img');
+		image.width = 40;
+		image.height = 40;
+		image.src = msg.imageUrl;
+		var title = document.createTextNode(msg.name);
+
+		wrapper.appendChild(image);
+		wrapper.appendChild(title);
+
+		buddyList.addContent(wrapper);
 	});
 
 	socket.on('joined', function(msg) {

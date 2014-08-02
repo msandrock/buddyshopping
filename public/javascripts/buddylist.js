@@ -48,10 +48,9 @@ function BuddyList() {
     //
     // Adds content to the buddy list and persists it in local storage
     //
-    this.addContent = function(content) {
+    this.addContent = function(contentNode) {
 
         // Create a new placeholder in the inner pane
-        var contentNode = document.createTextNode(content);
         var listElement = document.createElement('li');
         // Add content to the list element
         listElement.appendChild(contentNode);
