@@ -1,11 +1,17 @@
 var config = require('./config.js');
 var mongoose = require('mongoose');
+var crypto = require('crypto');
 var db = mongoose.connection;
+
 var itemSchema = mongoose.Schema({
     name : String,
     description : String,
     price : Number,
     imageUrl : String
+});
+
+var buddygroupSchema = mongoose.Schema({
+	memberSessionIds : { type: [String], index: true }
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -66,3 +72,32 @@ createItem('Landfleisch', 'Landfleisch Pur Rinderherzen&Nudeln', 89, '/images/ho
 createItem('Einfaches Produkt', 'Beschreibung für Produkt 5', 1785, '/images/home/product5.jpg');
 createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse', 167, '/images/home/product6.jpg');
 */
+
+//
+// Returns the ID of the user's buddy group
+//
+exports.getBuddygroupId = function(sessionId, callback) {
+    var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+    Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
+    	if (error || data) {
+    		callback(error, data._id);
+    	} else {
+    		var buddygroupId = crypto.randomBytes(12).toString('hex');
+    		Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
+    			callback(error, data ? data._id : null);
+    		});
+    	}
+    });
+};
+
+//
+// Joins a buddy group
+//
+exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
+    var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+    // TODO: Add the session id to the buddy group
+
+    // Buddygroup.findOne({ _id : id }, function(error, data) {
+    	
+    // });
+};
