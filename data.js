@@ -1,6 +1,7 @@
 var config = require('./config.js');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
+var _ = require('underscore');
 var db = mongoose.connection;
 
 var itemSchema = mongoose.Schema({
