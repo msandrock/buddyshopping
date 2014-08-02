@@ -24,10 +24,11 @@ exports.addItemToCart = function(session, itemId) {
         // Add new cart element to session
         session.cart = [createCartItem(itemId)];
     }
-
-    //console.log(session.cart);
 }
 
+//
+// Returns the list of cart items for the current sessions
+//
 exports.getCartItems = function(session) {
     var cart = session.cart;
 
@@ -44,6 +45,9 @@ function createCartItem(itemId) {
     };
 }
 
+//
+// Returns the current number of items in the cart
+//
 exports.getItemCount = function (session){
 
 	var cart = session.cart;
