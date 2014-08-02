@@ -34,7 +34,7 @@ router.get('/cart', function(req, res) {
 
     cartItems = cart.getCartItems(req.session);
 
-    // Get all cart items from the database
+    // TODO: Get all cart items from the database
 
     console.log(cartItems);
 

@@ -5,3 +5,16 @@ body {
 a {
   color: #00b7ff;
 }
+
+
+#details > div {
+	margin: 0 20px;
+}
+.product-information p {
+    float: left;
+    width: 100%;
+}
+
+header {
+    margin-bottom: 40px;
+}
