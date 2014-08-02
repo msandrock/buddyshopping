@@ -45,11 +45,11 @@ function createCartItem(itemId) {
 }
 
 exports.getItemCount = function (session){
-	
+
 	var cart = session.cart;
 
     if(cart) {
-		return cart[0].quantity;
+		return cart.length;
 	} else {
 		return 0;
 	}

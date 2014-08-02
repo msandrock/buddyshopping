@@ -41,6 +41,8 @@ router.get('/cart', function(req, res) {
     // Get all corresponding items from the database
     var ids = _.pluck(cartItems, 'itemId');
 
+    var cartCount = cart.getItemCount(req.session);
+
     data.getItemsById(ids, function(err, items) {
 
         var viewItems = [];
@@ -73,7 +75,7 @@ router.get('/cart', function(req, res) {
             };
         });
 
-        res.render('cart', { title: 'Cart', cartItems: cartItems});
+        res.render('cart', { title: 'Cart', cartItems: cartItems, cartCount: cartCount});
     });
 });
 
