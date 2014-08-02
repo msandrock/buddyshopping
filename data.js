@@ -1,6 +1,7 @@
 var config = require('./config.js');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
+var _ = require('underscore');
 var db = mongoose.connection;
 
 var itemSchema = mongoose.Schema({
@@ -42,6 +43,16 @@ exports.getItemById = function(id, callback) {
 	var Item = mongoose.model('Item', itemSchema);
 
 	Item.find({ _id : id }, callback);
+};
+
+//
+// Return all items in the id array
+//
+exports.getItemsById = function(ids, callback) {
+
+    var Item = mongoose.model('Item', itemSchema);
+
+    Item.find({ _id : { $in: ids }}, callback);
 };
 
 //
@@ -95,19 +106,25 @@ exports.getBuddygroupId = function(sessionId, callback) {
 //
 exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-	Buddygroup.findOne({ _id: buddygroupId }, function(error, data) {
+	Buddygroup.update({ memberSessionIds : sessionId }, {$pull: {memberSessionIds : sessionId}}, {}, function(error, numberAffected, rawResponse) {
 		if (error) {
 			callback(error);
-		} else if (!data) {
-			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
-				callback(error);
-			});
-		} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
-			Buddygroup.update({_id: buddygroupId}, {$push: {memberSessionIds: sessionId}}, {}, function(error, numberAffected, rawResponse) {
-				callback(error);
-			});
 		} else {
-			callback(null);
+			Buddygroup.findOne({ _id: buddygroupId }, function(error, data) {
+				if (error) {
+					callback(error);
+				} else if (!data) {
+					Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
+						callback(error);
+					});
+				} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
+					Buddygroup.update({_id: buddygroupId}, {$push: {memberSessionIds: sessionId}}, {}, function(error, numberAffected, rawResponse) {
+						callback(error);
+					});
+				} else {
+					callback(null);
+				}
+			});
 		}
 	});
 };

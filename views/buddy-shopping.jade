@@ -1,0 +1,15 @@
+div.container(style="width: 100%; padding-bottom: 40px; ")
+
+	h1
+		| Give this code to your friends and get a discount:
+	div.well.well-lg(style="font-size: 200%; text-align: center")
+		| #{buddygroupId}
+	
+	h1
+		| or enter their code here:
+	form(action="/buddy-shopping", method="post", role="form")
+		div.form-group
+			div.col-xs-10
+				input.form-control(type="text", name="buddygroupId")
+			div.col-xs-2
+				input.btn.btn-primary(type="submit", value="Go!", style="margin-top: 2px")

@@ -1,6 +1,8 @@
 /node_modules
 /nbproject/private/
-nbproject/project.properties
-nbproject/project.xml
-npm-debug.log
-.project
+/nbproject/project.properties
+/nbproject/project.xml
+/npm-debug.log
+/.project
+/public/stylesheets/style.css
+/data
