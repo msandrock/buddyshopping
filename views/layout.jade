@@ -3,6 +3,7 @@ html
 	head
 		block htmlHead
 			title= title
+			meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
 			link(rel='stylesheet', href='/stylesheets/style.css')
 			link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
 			link(rel='stylesheet', href='/stylesheets/main.css')
@@ -20,6 +21,9 @@ html
 					FastClick.attach(document.body);
 				});
 			script(type='text/javascript', src='/javascripts/toastr.min.js')
+			script(type='text/javascript', src='/javascripts/jquery.equalheights.min.js')
+			script(type='text/javascript', src='/javascripts/qrcode.js')
+			script(type='text/javascript', src='/socket.io/socket.io.js')
 			script(type='text/javascript').
 				$(function() {
 					var $button = $('#buddyShoppingButton');
@@ -89,3 +93,5 @@ html
 		div#buddyListClosed
 			h4 My buddys
 				a#openBuddyList(href='#') Open
+
+		script(type='text/javascript', src='/javascripts/main.js')

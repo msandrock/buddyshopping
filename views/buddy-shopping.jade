@@ -1,15 +1,50 @@
 div.container(style="width: 100%; padding-bottom: 40px; ")
 
 	h1
-		| Give this code to your friends and get a discount:
-	div.well.well-lg(style="font-size: 200%; text-align: center")
-		| #{buddygroupId}
-	
-	h1
-		| or enter their code here:
-	form(action="/buddy-shopping", method="post", role="form")
-		div.form-group
-			div.col-xs-10
-				input.form-control(type="text", name="buddygroupId")
-			div.col-xs-2
-				input.btn.btn-primary(type="submit", value="Go!", style="margin-top: 2px")
+		| Give this code to your friends and get a discount: 
+		button.btn#buddygroupIdPanelToggleButton
+			| QR Code
+
+	div#buddygroupIdFormPanel.buddygroupIdPanel
+		div.well.well-lg(style="font-size: 200%; text-align: center")
+			| #{buddygroupId}
+		
+		h1
+			| or enter their code here:
+		form(action="/buddy-shopping", method="post", role="form")
+			div.form-group
+				div.col-xs-10
+					input.form-control(type="text", name="buddygroupId")
+				div.col-xs-2
+					input.btn.btn-primary(type="submit", value="Go!", style="margin-top: 2px")
+		div.clearfix
+
+	div#buddygroupIdQrCodePanel.buddygroupIdPanel(style="display: none; ")
+		div#qrCodeContainer(style="text-align: center; ")
+
+	script(type='text/javascript').
+		$(function() {
+			$('.buddygroupIdPanel').equalHeights();
+			$('#buddygroupIdPanelToggleButton').click(function() {
+				var firstPanelVisible = ($('#buddygroupIdFormPanel').css('display') != 'none');
+				if (firstPanelVisible) {
+					$('#buddygroupIdFormPanel').css('display', 'none');
+					$('#buddygroupIdQrCodePanel').css('display', '');
+				} else {
+					$('#buddygroupIdFormPanel').css('display', '');
+					$('#buddygroupIdQrCodePanel').css('display', 'none');
+				}
+			});
+			var qrCodeContainer = $('#qrCodeContainer')[0];
+			new QRCode(qrCodeContainer, {
+				text: "http://jindo.dev.naver.com/collie",
+				width: 128,
+				height: 128,
+				colorDark : "#000000",
+				colorLight : "#ffffff",
+				correctLevel : QRCode.CorrectLevel.H
+			});
+			// console.log($('#qrCodeContainer img'));
+			// $('#qrCodeContainer img').css('display', '');
+			// $('#qrCodeContainer img')[0].style.display = '';
+		});
