@@ -33,7 +33,7 @@ router.get('/details/*', function(req, res) {
 //
 // Adds an item to the users cart; Expects the item id as a parameter ("id")
 //
-router.get('/ajax_add_item_to_cart', function(req, res) {
+router.post('/ajax_add_item_to_cart', function(req, res) {
 
     // Store the item in the users session - try to load the cart from session
     var id = req.query.id;
