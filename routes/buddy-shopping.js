@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 		} else {
 			res.render('buddy-shopping', {
 				buddygroupId: buddygroupId,
-				qrCodeUrl: 'http://' + ipAddress + ':1337/buddy-shopping?buddygroupId=' + buddygroupId
+				qrCodeUrl: 'http://' + ipAddress + ':1337/buddy-join?buddygroupId=' + buddygroupId
 			});
 		}
 	});
