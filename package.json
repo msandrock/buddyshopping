@@ -5,9 +5,10 @@
         "start" : "app.js"
     },
     "dependencies" : {
-        "express"       : "*",
-        "socket.io"     : "*",
-        "underscore"    : "",
-        "mongodb"       : "*"
+        "express"               : "*",
+        "express-generator"     : "*",
+        "socket.io"             : "*",
+        "underscore"            : "",
+        "mongodb"               : "*"
     }
 }
