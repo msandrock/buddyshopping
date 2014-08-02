@@ -82,6 +82,26 @@ function BuddyList() {
         }
     };
 
+    this.joined = function(msg) {
+        buddyList.addContent(this._joinedMessage(msg));
+    }
+
+    this.visitItem = function(msg) {
+        buddyList.addContent(this._visitItemMessage(msg));
+    }
+
+    this.addToCart = function(msg) {
+        buddyList.addContent(this._addToCartMessage(msg));
+    }
+
+    this.goToCheckout = function(msg) {
+        buddyList.addContent(this._goToCheckoutMessage(msg));
+    }
+
+    this.reconnect = function(msg) {
+        buddyList.addContent(this._reconnectMessage(msg))
+    }
+
     //
     // Clear the message list
     //
@@ -90,6 +110,70 @@ function BuddyList() {
 
         localStorage.removeItem('listContent');
     };
+
+    //
+    // Helper functions
+    //
+
+    this._joinedMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var title = document.createTextNode(msg.text);
+
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
+
+    this._visitItemMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var image = document.createElement('img');
+        image.width = 40;
+        image.height = 40;
+        image.src = msg.imageUrl;
+        var title = document.createTextNode(msg.name);
+
+        wrapper.appendChild(image);
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
+
+    this._addToCartMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var image = document.createElement('img');
+        image.width = 40;
+        image.height = 40;
+        image.src = msg.imageUrl;
+        var title = document.createTextNode(msg.name);
+
+        wrapper.appendChild(image);
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
+
+    this._goToCheckoutMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var title = document.createTextNode(msg.text);
+
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
+
+    this._reconnectMessage = function(msg) {
+
+        var wrapper = document.createElement('span');
+        var title = document.createTextNode(msg.text);
+
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
 }
 
 var buddyList = new BuddyList();
