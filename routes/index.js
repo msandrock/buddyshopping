@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
     });
 });
 
-router.get('/details', function(req, res) {
+router.get('/details/*', function(req, res) {
     
         var testProduct = {
             _id: 1,
