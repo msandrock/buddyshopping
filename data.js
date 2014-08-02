@@ -1,5 +1,6 @@
 var config = require('./config.js');
 var mongoose = require('mongoose');
+var crypto = require('crypto');
 var db = mongoose.connection;
 var itemSchema = mongoose.Schema({
     name : String,
@@ -73,13 +74,34 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 //
 // Returns the ID of the user's buddy group
 //
-exports.getBuddyGroupId = function(sessionId, callback) {
-	
+exports.getBuddygroupId = function(sessionId, callback) {
+    var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+    Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
+    	if (error) {
+    		throw error;
+    	}
+    	if (data) {
+    		callback(data);
+    		return;
+    	}
+    	var buddygroupId = crypto.randomBytes(5).toString('hex');
+    	Buddygroup.create({_id: buddygroupId}, function(error, record) {
+        	if (error) {
+        		throw error;
+        	} else {
+        		callback(buddygroupId);
+        	}
+    	});
+    });
 };
 
 //
 // Joins a buddy group
 //
-exports.joinBuddyGroup = function(sessionId, buddyGroupCode, callback) {
-	
+exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
+    var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+    // Buddygroup.findOne({ _id : id }, function(error, data) {
+    	
+    // });
+
 };
