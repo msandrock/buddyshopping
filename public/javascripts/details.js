@@ -15,8 +15,9 @@ $(document).ready(function(){
 				toastr.error('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut');
 			}
 			
-			$(element ).removeClass('active');
-			$(element ).html("Zum Warenkorb hinzufügen");
+			$(element).removeClass('active');
+			$(element).html("Zum Warenkorb hinzufügen");
+			$('#count-cart').html(data.cartCount);
 			
 		}, 'json').error(function(){
 			console.log("errror");

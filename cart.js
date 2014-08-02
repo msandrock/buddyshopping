@@ -28,6 +28,12 @@ exports.addItemToCart = function(session, itemId) {
     //console.log(session.cart);
 }
 
+exports.getCartItems = function(session) {
+    var cart = session.cart;
+
+    return cart ? cart : [];
+}
+
 //
 // Helper to create a new cart item element
 //
@@ -36,4 +42,16 @@ function createCartItem(itemId) {
         itemId: itemId,
         quantity: 1
     };
+}
+
+exports.getItemCount = function (session){
+	
+	var cart = session.cart;
+
+    if(cart) {
+		return cart[0].quantity;
+	} else {
+		return 0;
+	}
+
 }

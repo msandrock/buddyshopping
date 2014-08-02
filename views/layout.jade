@@ -44,7 +44,18 @@ html
 						ul.nav.navbar-nav.navbar-right
 							li
 								a(href='/login') Login
-		
+							li
+								a(href='/cart') 
+									i.fa.fa-shopping-cart
+									if cartCount != 0 && cartCount != undefined
+										|  Warenkorb (
+										span#count-cart #{cartCount}
+										| )
+									else
+										|  Warenkorb (
+										span#count-cart 0
+										| )
+
 		block content
 
 		div(style="position: relative")
