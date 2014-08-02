@@ -136,7 +136,7 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 					Buddygroup.update({_id: buddygroupId}, {$push: {memberSessionIds: sessionId}}, {}, function(error, numberAffected, rawResponse) {
 						callback(error);
 						if(!error) {
-							websocketsHandler.sendToGroup(buddygroupId, "joined", {text: "Ein Benutzer ist beigetretten"});
+							websocketsHandler.sendToGroup(buddygroupId, "joined", {text: "Ein Benutzer ist beigetreten"});
 						}
 					});
 				} else {

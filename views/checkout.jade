@@ -25,6 +25,7 @@ block content
 					include elements/products
 
 		section.checkout
-			.row
-				.col-sm-12
-					button.btn.btn-success.pull-right Kostenpflichtig bestellen
+			form(method="post", action="/place-new-order")
+				.row
+					.col-sm-12
+						button.btn.btn-success.pull-right Kostenpflichtig bestellen

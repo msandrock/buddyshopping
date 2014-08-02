@@ -4,23 +4,23 @@ $(document).ready(function(){
 });
 
 function createSocket(){
-	
+
 	if(typeof socket != "undefined") {
 		socket.emit('setGroupId');
 		return;
 	}
-	
+
 	socket = io.connect("/");
-	
+
 	socket.on('visitItem', function(msg) {
-		console.log(msg);
+		buddyList.addContent(msg.text);
 	});
-	
+
 	socket.on('joined', function(msg) {
-		console.log(msg);
+		buddyList.addContent(msg.text);
 	});
-	
+
 	socket.on('reconnect', function(msg) {
-		console.log("REconnect");
+		buddyList.addContent(msg.text);
 	});
 }
