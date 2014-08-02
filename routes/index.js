@@ -3,6 +3,7 @@ var _ = require('underscore');
 var data = require('../data.js');
 var cart = require('../cart.js');
 var router = express.Router();
+var websocketsHandler = require('../websockets-handler');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -29,26 +30,12 @@ router.get('/details/*', function(req, res) {
     data.getItemById(id, function(err, item) {
         if(!err) {
             res.render('details', { title: 'Express', item: item[0], cartCount : cartCount});
+			websocketsHandler.sendToGroupBySessionId(req.sessionID, "visitItem", item[0]);
         } else {
             console.log(err);
         }
     });
-	
-	data.ifIsBodyGroupJoined(req.sessionID, function(error, groupId, isJoined){
-		
-		if(isJoined) {
-			var group = websocketsFromGroup[groupId];
-			console.log("send to other in Group" + groupId );
-			
-			for(var sessionId in group) { 
-				console.log("send Visit of item to " + sessionId);
-				group[sessionId].emit("visitItem", {itemId : id});
-			}
 
-
-		}
-
-	});
 	
 });
 
