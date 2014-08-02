@@ -5,10 +5,13 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
+	
+	var cartCount = cart.getItemCount(req.session);
+	
     // Load data from db and pass it to the view
     data.getItems(function(err, items) {
         if(!err) {
-            res.render('index', { title: 'Express', products: items});
+            res.render('index', { title: 'Express', products: items, cartCount : cartCount});
         } else {
             console.log(err);
         }
@@ -19,10 +22,12 @@ router.get('/', function(req, res) {
 router.get('/details/*', function(req, res) {
     // Extrat the item id from the url
     var id = req.params[0];
+	
+	var cartCount = cart.getItemCount(req.session);
 
     data.getItemById(id, function(err, item) {
         if(!err) {
-            res.render('details', { title: 'Express', item: item[0]});
+            res.render('details', { title: 'Express', item: item[0], cartCount : cartCount});
         } else {
             console.log(err);
         }
