@@ -45,7 +45,7 @@ router.get('/cart', function(req, res) {
 
     data.getItemsById(ids, function(err, items) {
 
-        var viewItems = [];
+        /*var viewItems = [];
 
         for(var i = 0 ; i < items.length ; i++) {
             // Construct a new object
@@ -58,7 +58,7 @@ router.get('/cart', function(req, res) {
             };
 
             viewItems.push(viewItem);
-        }
+        }*/
 
         // Add quantity from cart items
         cartItems = _.map(items, function(item) {
@@ -71,7 +71,8 @@ router.get('/cart', function(req, res) {
                 description : item.description,
                 price : item.price,
                 imageUrl : item.imageUrl,
-                quantity : cartItem.quantity
+                quantity : cartItem.quantity,
+				total : item.price * cartItem.quantity
             };
         });
 
