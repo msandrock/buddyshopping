@@ -21,7 +21,7 @@ router.get('/details/*', function(req, res) {
 
     data.getItemById(id, function(err, item) {
         if(!err) {
-            res.render('details', { title: 'Express', product: item});
+            res.render('details', { title: 'Express', item: item[0]});
         } else {
             console.log(err);
         }
