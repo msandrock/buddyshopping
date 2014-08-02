@@ -17,17 +17,18 @@ $(function() {
         buddyList.clearContent();
     });
 
-    //addMessage();
-    //buddyList.clearContent();
+    $('#postMessage').on('submit', function(e) {
+
+        var message = $('#messageText').val();
+
+        alert('TODO: Send message to websocket');
+
+        $('#messageText').val('');
+        return false;
+    });
+
     buddyList.loadContent();
 });
-
-// Nur zum testen
-//var x = 0;
-//function addMessage() {
-//    var bl = new BuddyList();
-//    window.setTimeout(function() { bl.addContent(++x + ' My message'); }, 2000);
-//}
 
 function BuddyList() {
 

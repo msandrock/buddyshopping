@@ -61,7 +61,7 @@ html
 							span.icon-bar
 							span.icon-bar
 							span.icon-bar
-						
+
 					div.navbar-collapse.collapse#header-navbar-collapse
 						ul.nav.navbar-nav.navbar-right
 							li
@@ -92,9 +92,11 @@ html
 		div#buddyListOpen
 			h4 My buddys&nbsp;
 				a#closeBuddyList(href='#') Close
-				| &nbsp;/ 
+				| &nbsp;/
 				a#clearBuddyList(href='#') Clear
 			ul#buddyMessages
+			form#postMessage(type=post)
+				input#messageText(type=text, placeholder='Mitteilung senden')
 
 		div#buddyListClosed
 			h4 My buddys&nbsp;
