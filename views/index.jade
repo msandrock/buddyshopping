@@ -1,5 +1,19 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    section
+        div.container
+            div.row
+                div.col-sm-12
+                    div.features_items
+                        h2 Items
+                        div.col-sm-4
+                            div.product-image-wrapper
+                                div.single-products
+                                    div.productinfo.text-center
+                                        img(src='/images/home/product1.jpg')
+                                        h2 1€
+                                        p Leichte Jacke
+                                        a(href='#').btn.btn-default.add-to-cart
+                                            i.fa.fa-shopping-cart
+                                            Zum Warenkorb hinzufügen
