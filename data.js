@@ -171,7 +171,7 @@ exports.createOrder = function(data, callback) {
 //
 exports.getOrder = function(orderId, callback) {
 	var Order = mongoose.model('Order', orderSchema);
-	Buddygroup.findOne({ _id : orderId }, callback);
+	Order.findOne({ _id : orderId }, callback);
 };
 
 //
@@ -180,7 +180,7 @@ exports.getOrder = function(orderId, callback) {
 //
 exports.markOrderPublishedToBuddies = function(orderId, callback) {
 	var Order = mongoose.model('Order', orderSchema);
-	Buddygroup.update({ _id : orderId }, {publishedToBuddies: true}, {}, function(error, numberAffected, rawResponse) {
+	Order.update({ _id : orderId }, {publishedToBuddies: true}, {}, function(error, numberAffected, rawResponse) {
 		callback(error, numberAffected != 0);
 	});
 };
