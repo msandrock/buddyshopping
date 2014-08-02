@@ -84,6 +84,17 @@ function sendToGroup(groupId, type, content) {
 	}
 }
 
+function sendToGroupBySessionId(sessionID, type, content) {
+	
+	data.ifIsBodyGroupJoined(sessionID, function(error, groupId, isJoined){
+		
+		if(isJoined) {
+			sendToGroup(groupId, type, content);
+		}
+
+	});
+}
+
 function getcookie(header, name, secret) {
 //  var header = req.headers.cookie;
   var raw;
@@ -143,4 +154,5 @@ function getcookie(header, name, secret) {
   return val;
 }
 
-exports.sendToGroup = sendToGroup
+exports.sendToGroup = sendToGroup;
+exports.sendToGroupBySessionId = sendToGroupBySessionId;
