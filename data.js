@@ -1,40 +1,6 @@
 var config = require('./config.js');
 var mongoose = require('mongoose');
 var db = mongoose.connection;
-var connected = false;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
-    // yay!
-    console.log('Successfully connected to database');
-    connected = true;
-});
-
-//
-// Sets up the basic database connection
-//
-exports.connect = function(connectionString) {
-
-    if(!connected) {
-        mongoose.connect(connectionString);
-    } else {
-        console.log('Already connected to database');
-    }
-}
-
-//
-// Closes the databaee connection
-//
-exports.close = function() {
-
-    if(connected) {
-        mongoose.close();
-    } else {
-        console.log('Connection is already closed');
-    }
-}
-
-
 var itemSchema = mongoose.Schema({
     name: String,
     description : String,
@@ -42,29 +8,25 @@ var itemSchema = mongoose.Schema({
     imageUrl : String
 });
 
-// First get the model instance
-var Item = mongoose.model('Item', itemSchema);
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+    // yay!
+    console.log('Successfully connected to database');
+});
+
+// Set up the database connection
+mongoose.connect(config.database.connectionString);
 
 //
 // Return a list with all categories
 //
 exports.getItems = function(callback) {
 
-    if(connected) {
-        Item.find(callback);
-    } else {
-        // Not connected to database
-        err = "Not connected to database";
-    }
+    // First get the model instance
+    var Item = mongoose.model('Item', itemSchema);
+
+    Item.find(callback);
 }
-
-/*
-
-function (err, kittens) {
-if (err) return console.error(err);
-console.log(kittens)
-
-*/
 
 //
 // Adds a new item to the collection
