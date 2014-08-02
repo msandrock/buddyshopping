@@ -57,5 +57,4 @@ exports.getItemCount = function (session){
 	} else {
 		return 0;
 	}
-
 }
