@@ -18,4 +18,18 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Express', products: products});
 });
 
+router.get('/details', function(req, res) {
+    
+        var testProduct = {
+            _id: 1,
+            name : "Leichte Jacke",
+            description : "Dies ist eine Leicht Jacke",
+            price : 1,
+            imageUrl : "/images/home/product2.jpg"
+        };
+
+    
+  res.render('details', { title: 'Express', product: testProduct});
+});
+
 module.exports = router;
