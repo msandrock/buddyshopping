@@ -1,26 +1,27 @@
 extends layout
 
 block content
-    section
-        div.container
-            div.row
-                div.col-sm-12
-                    div.features_items
-                        h2.title.text-center Items
-                        for product in products
-                            div.col-sm-4
-                                div.product-image-wrapper
-                                    div.single-products
-                                        div.productinfo.text-center
-                                            img(src=product.imageUrl)
-                                            h2 #{product.price} €
-                                            p #{product.name}
-                                            a(href='/details/' + product._id).btn.btn-default.add-to-cart
-                                                i.fa.fa-shopping-cart
-                                                | Details
-                                    div.choose
-                                        ul
-                                            li
-                                                a(href='#').btn.btn-default.add-to-cart
-                                                    i.fa.fa-plus-square
-                                                    | Share with friend
+	section
+		div.container
+			div.row
+				div.col-sm-12
+					div.features_items
+						h2.title.text-center Items
+						for product in products
+							div.col-sm-4
+								div.product-image-wrapper
+									div.single-products
+										div.productinfo.text-center
+											a(href='/details/' + product._id).btn.btn-default.add-to-cart
+												img(src=product.imageUrl)
+											h2 #{product.price} €
+											p #{product.name}
+											a(href='/details/' + product._id).btn.btn-default.add-to-cart
+												i.fa.fa-shopping-cart
+												| Details
+									div.choose
+										ul
+											li
+												a(href='#').btn.btn-default.add-to-cart
+													i.fa.fa-plus-square
+													| Share with friend
