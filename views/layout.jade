@@ -1,32 +1,34 @@
 doctype html
 html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
-    link(rel='stylesheet', href='/stylesheets/main.css')
-    link(rel='stylesheet', href='/stylesheets/animate.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/responsive.css')
-    script(type='text/javascirpt', href='/javascripts/bootstrap.min.js')
-    script(type='text/javascirpt', href='/javascripts/jquery-2.1.1.min.js')
-  body
-    header#header
-        div.header-middle
-            div.container
-                div.row
-                    div.col-sm-4
-                        div.logo.pull-left
-                            a(href='/')
-                                img(src='/images/home/logo.png')
-        div.header-bottom
-            div.container
-                div.row
-                    div.col-sm-9
-                        div.mainmenu.pull-left
-                            ul.nav.navbar-nav.collapse.navbar-collapse
-                                li
-                                    a(href='/') Home
-            
-        
-    block content
+	head
+		block htmlHead
+			title= title
+			link(rel='stylesheet', href='/stylesheets/style.css')
+			link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+			link(rel='stylesheet', href='/stylesheets/main.css')
+			link(rel='stylesheet', href='/stylesheets/animate.css')
+			link(rel='stylesheet', href='/stylesheets/style.css')
+			link(rel='stylesheet', href='/stylesheets/responsive.css')
+			script(type='text/javascript', src='/javascripts/jquery-2.1.1.min.js')
+		
+	body
+		header#header
+			div.header-middle
+				div.container
+					div.row
+						div.col-sm-4
+							div.logo.pull-left
+								a(href='/')
+									img(src='/images/home/logo.png')
+			div.header-bottom
+				div.container
+					div.row
+						div.col-sm-9
+							div.mainmenu.pull-left
+								ul.nav.navbar-nav.collapse.navbar-collapse
+									li
+										a(href='/') Home
+
+
+		block content
+	
