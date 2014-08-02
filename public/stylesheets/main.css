@@ -1174,7 +1174,7 @@ h2.title {
 .view-product img {
   border: 1px solid #F7F7F0;
   height: 380px;
-  width: 100%;
+  /*width: 100%;*/
 }
 
 .view-product h3 {
@@ -1288,8 +1288,8 @@ h2.title {
   color: #FFFFFF;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
-  margin-bottom: 10px;
-  margin-left: 20px;
+  /*margin-bottom: 10px;*/
+  /*margin-left: 20px;*/
 }
 
 

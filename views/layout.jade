@@ -9,26 +9,25 @@ html
 			link(rel='stylesheet', href='/stylesheets/animate.css')
 			link(rel='stylesheet', href='/stylesheets/style.css')
 			link(rel='stylesheet', href='/stylesheets/responsive.css')
+			link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
+			link(rel='stylesheet', href='/stylesheets/toastr.css')
 			script(type='text/javascript', src='/javascripts/jquery-2.1.1.min.js')
+			script(type='text/javascript', src='/javascripts/toastr.min.js')
 		
 	body
 		header#header
-			div.header-middle
+			div.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
 				div.container
-					div.row
-						div.col-sm-4
-							div.logo.pull-left
-								a(href='/')
-									img(src='/images/home/logo.png')
-			div.header-bottom
-				div.container
-					div.row
-						div.col-sm-9
-							div.mainmenu.pull-left
-								ul.nav.navbar-nav.collapse.navbar-collapse
-									li
-										a(href='/') Home
-
+					div.navbar-header
+						a.navbar-brand(href="/") 
+							| BuddyShopping
+					div.navbar-collapse collapse
+						ul.nav.navbar-nav
+							li
+								a(href='/') Home
+						ul.nav.navbar-nav.navbar-right
+							li
+								a(href='/login') Login
 
 		block content
 	
