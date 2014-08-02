@@ -31,4 +31,9 @@ function createSocket(){
 	socket.on('reconnect', function(msg) {
 
 	});
+	
+	socket.on('chatMessage', function(msg) {
+		console.log(msg);
+		buddyList.handeChatMessage(msg);
+	});
 }

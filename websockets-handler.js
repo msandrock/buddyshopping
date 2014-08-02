@@ -46,7 +46,10 @@ exports.handleConnect = function (socket) {
 		
 		
 		
-		
+		socket.on('chatMessage', function(msg) {
+			console.log(msg);
+			sendToGroupBySessionId(sessionId, "chatMessage", msg);
+		});
 		
 		
 		
@@ -74,11 +77,13 @@ handleDisconnect = function(socket){
 		
 }
 
-function sendToGroup(groupId, type, content) {
+function sendToGroup(groupId, type, content, currentSessionID) {
 	var group = websocketsFromGroup[groupId];
 	console.log("send to other in Group" + groupId);
 
 	for (var sessionId in group) {
+		if(sessionId == currentSessionID)
+			continue;
 		console.log("send to " + sessionId);
 		group[sessionId].emit(type, content);
 	}
@@ -89,7 +94,7 @@ function sendToGroupBySessionId(sessionID, type, content) {
 	data.ifIsBodyGroupJoined(sessionID, function(error, groupId, isJoined){
 		
 		if(isJoined) {
-			sendToGroup(groupId, type, content);
+			sendToGroup(groupId, type, content, sessionID);
 		}
 
 	});

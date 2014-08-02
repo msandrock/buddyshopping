@@ -4,32 +4,43 @@
 //
 $(function() {
     $('#openBuddyList').click(function(e) {
-        $('#buddyListClosed').hide();
-        $('#buddyListOpen').show();
+        buddyList.openList();
     });
 
     $('#closeBuddyList').click(function(e) {
-        $('#buddyListOpen').hide();
-        $('#buddyListClosed').show();
+        buddyList.closeList();
     });
 
     $('#clearBuddyList').click(function(e) {
         buddyList.clearContent();
     });
 
-    //addMessage();
-    //buddyList.clearContent();
+    $('#postMessage').on('submit', function(e) {
+
+		if($('#messageText').val() != "") {
+			var message = $('#messageText').val();
+			socket.emit( "chatMessage",{text: message});
+			buddyList.myChatMessage(message);
+			$('#messageText').val('');
+		}
+        
+        return false;
+    });
+
     buddyList.loadContent();
 });
 
-// Nur zum testen
-//var x = 0;
-//function addMessage() {
-//    var bl = new BuddyList();
-//    window.setTimeout(function() { bl.addContent(++x + ' My message'); }, 2000);
-//}
-
 function BuddyList() {
+
+    this.openList = function() {
+        $('#buddyListClosed').hide();
+        $('#buddyListOpen').show();
+    };
+
+    this.closeList = function() {
+        $('#buddyListOpen').hide();
+        $('#buddyListClosed').show();
+    };
 
     //
     // Loads the current list content from local storage and displays it in the buddy list
@@ -70,6 +81,9 @@ function BuddyList() {
             $('#buddyMessages')[0].appendChild(listElement);
         }
 
+        // Open the list, in case it is currently hidden
+        this.openList();
+
         var listContent = $('#buddyMessages').html();
 
         // Store the list content in local storage
@@ -97,6 +111,11 @@ function BuddyList() {
     this.goToCheckout = function(msg) {
         buddyList.addContent(this._goToCheckoutMessage(msg));
     }
+	
+		
+	this.handeChatMessage = function(msg) {
+		buddyList.addContent(this._chatMessage(msg));
+	}
 
     //
     // Clear the message list
@@ -106,6 +125,18 @@ function BuddyList() {
 
         localStorage.removeItem('listContent');
     };
+	
+	
+	this.myChatMessage = function(msgtext) {
+
+        var wrapper = document.createElement('div');
+		wrapper.className = "chat-entry chat-self-entry";
+        var title = document.createTextNode(msgtext);
+
+        wrapper.appendChild(title);
+
+		this.addContent(wrapper);
+    }
 
     //
     // Helper functions
@@ -166,6 +197,19 @@ function BuddyList() {
 
         return wrapper;
     }
+
+    this._chatMessage = function(msg) {
+
+        var wrapper = document.createElement('div');
+		wrapper.className = "chat-entry";
+        var title = document.createTextNode(msg.text);
+
+        wrapper.appendChild(title);
+
+        return wrapper;
+    }
+
+
 }
 
 var buddyList = new BuddyList();
