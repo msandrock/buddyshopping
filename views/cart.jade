@@ -37,3 +37,7 @@ block content
 						tr
 							td(colspan=6)
 								| No items in cart
+			- if (cartItems.length != 0) {
+				a.btn.btn-block.btn-primary(href="/checkout")
+					| Checkout
+			- }
