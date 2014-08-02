@@ -1,12 +1,44 @@
 var cookieSignature = require('cookie-signature');
-exports.setHandler = function (socket, session) {
+var cookie = require('cookie');
+var data = require('./data.js');
+generalWebsockets = {};
+websocketsFromGroup = {};
+
+exports.handleConnect = function (socket) {
+	var sessionId = getcookie(socket.handshake.headers.cookie, config.session.name, config.session.secret);
+	socket.sessionId = sessionId;
+	console.log("New Websocket connect");
 	
-	sessionId = getcookie(socket.handshake.headers.cookie, config.session.name, config.session.secret);
-	sessionStore.get(sessionId, function(err, socket){
+	data.ifIsBodyGroupJoined(sessionId, function(error, groupId, isJoined){
+
+		socket.groupId = false;
 		
+		if(isJoined) {
+			socket.groupId = groupId;
+			
+			if(typeof websocketsFromGroup[groupId] == "undefined")
+				websocketsFromGroup[groupId] = {};
+			
+			websocketsFromGroup[groupId][sessionId] = socket;
+			
+		}
+
+	});
+	
+	sessionStore.get(sessionId, function(err, session){
 		
+		generalWebsockets[sessionId] =  session;
+		socket.session =  session;
 		
-		socket.on('view_item', function(data) {
+		socket.on('setGroupId', function() {
+			data.ifIsBodyGroupJoined(socket.sessionId, function(error, groupId, isJoined){
+				if(isJoined) {
+					if(typeof websocketsFromGroup[groupId] == "undefined")
+						websocketsFromGroup[groupId] = {};
+					websocketsFromGroup[groupId][sessionId] = socket;
+				}
+
+			});
 
 		});
 		
@@ -19,12 +51,37 @@ exports.setHandler = function (socket, session) {
 		
 		
 		
-		
+		socket.on('disconnect', function() {
+			handleDisconnect(socket);
+		});
 		
 		
 		
 	});
 	
+}
+
+handleDisconnect = function(socket){
+	console.log("disconnect");
+	var sessionId = socket.sessionId;
+	if(typeof generalWebsockets[sessionId] != "undefined") {
+		delete generalWebsockets[sessionId];
+	}
+	
+	if( socket.groupId) {
+		delete websocketsFromGroup[socket.groupId][sessionId] ;
+	}
+		
+}
+
+function sendToGroup(groupId, type, content) {
+	var group = websocketsFromGroup[groupId];
+	console.log("send to other in Group" + groupId);
+
+	for (var sessionId in group) {
+		console.log("send to " + sessionId);
+		group[sessionId].emit(type, content);
+	}
 }
 
 function getcookie(header, name, secret) {
@@ -85,3 +142,5 @@ function getcookie(header, name, secret) {
 
   return val;
 }
+
+exports.sendToGroup = sendToGroup

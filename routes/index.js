@@ -33,6 +33,23 @@ router.get('/details/*', function(req, res) {
             console.log(err);
         }
     });
+	
+	data.ifIsBodyGroupJoined(req.sessionID, function(error, groupId, isJoined){
+		
+		if(isJoined) {
+			var group = websocketsFromGroup[groupId];
+			console.log("send to other in Group" + groupId );
+			
+			for(var sessionId in group) { 
+				console.log("send Visit of item to " + sessionId);
+				group[sessionId].emit("visitItem", {itemId : id});
+			}
+
+
+		}
+
+	});
+	
 });
 
 router.get('/cart', function(req, res) {
