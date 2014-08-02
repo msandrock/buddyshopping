@@ -4,10 +4,10 @@ var crypto = require('crypto');
 var db = mongoose.connection;
 
 var itemSchema = mongoose.Schema({
-    name : String,
-    description : String,
-    price : Number,
-    imageUrl : String
+	name : String,
+	description : String,
+	price : Number,
+	imageUrl : String
 });
 
 var buddygroupSchema = mongoose.Schema({
@@ -16,8 +16,8 @@ var buddygroupSchema = mongoose.Schema({
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-    // yay!
-    console.log('Successfully connected to database');
+	// yay!
+	console.log('Successfully connected to database');
 });
 
 // Set up the database connection
@@ -28,10 +28,10 @@ mongoose.connect(config.database.connectionString);
 //
 exports.getItems = function(callback) {
 
-    // First get the model instance
-    var Item = mongoose.model('Item', itemSchema);
+	// First get the model instance
+	var Item = mongoose.model('Item', itemSchema);
 
-    Item.find(callback);
+	Item.find(callback);
 };
 
 //
@@ -39,9 +39,9 @@ exports.getItems = function(callback) {
 //
 exports.getItemById = function(id, callback) {
 
-    var Item = mongoose.model('Item', itemSchema);
+	var Item = mongoose.model('Item', itemSchema);
 
-    Item.find({ _id : id }, callback);
+	Item.find({ _id : id }, callback);
 };
 
 //
@@ -49,19 +49,19 @@ exports.getItemById = function(id, callback) {
 //
 function createItem(name, description, price, imageUrl) {
 
-    var item = new Item({
-        name : name,
-        description : description,
-        price : price,
-        imageUrl : imageUrl
-    });
+	var item = new Item({
+		name : name,
+		description : description,
+		price : price,
+		imageUrl : imageUrl
+	});
 
-    item.save(function (err, item) {
-        if (err) return console.error(err);
+	item.save(function (err, item) {
+		if (err) return console.error(err);
 
-        // Possibly do something with item here, after it was saved
-        console.log('Successfully saved item ' + item.name);
-    });
+		// Possibly do something with item here, after it was saved
+		console.log('Successfully saved item ' + item.name);
+	});
 }
 
 /*
@@ -77,27 +77,37 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 // Returns the ID of the user's buddy group
 //
 exports.getBuddygroupId = function(sessionId, callback) {
-    var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-    Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
-    	if (error || data) {
-    		callback(error, data._id);
-    	} else {
-    		var buddygroupId = crypto.randomBytes(12).toString('hex');
-    		Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
-    			callback(error, data ? data._id : null);
-    		});
-    	}
-    });
+	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+	Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
+		if (error || data) {
+			callback(error, data._id);
+		} else {
+			var buddygroupId = crypto.randomBytes(12).toString('hex');
+			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
+				callback(error, data ? data._id : null);
+			});
+		}
+	});
 };
 
 //
 // Joins a buddy group
 //
 exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
-    var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-    // TODO: Add the session id to the buddy group
-
-    // Buddygroup.findOne({ _id : id }, function(error, data) {
-    	
-    // });
+	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+	Buddygroup.findOne({ _id: buddygroupId }, function(error, data) {
+		if (error) {
+			callback(error);
+		} else if (!data) {
+			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
+				callback(error);
+			});
+		} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
+			Buddygroup.update({_id: buddygroupId}, {$push: {memberSessionIds: sessionId}}, {}, function(error, numberAffected, rawResponse) {
+				callback(error);
+			});
+		} else {
+			callback(null);
+		}
+	});
 };
