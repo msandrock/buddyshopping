@@ -6,9 +6,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-	
+
 	var cartCount = cart.getItemCount(req.session);
-	
+
     // Load data from db and pass it to the view
     data.getItems(function(err, items) {
         if(!err) {
@@ -23,7 +23,7 @@ router.get('/', function(req, res) {
 router.get('/details/*', function(req, res) {
     // Extract the item id from the url
     var id = req.params[0];
-	
+
 	var cartCount = cart.getItemCount(req.session);
 
     data.getItemById(id, function(err, item) {
@@ -73,10 +73,7 @@ router.get('/cart', function(req, res) {
             };
         });
 
-        console.log(cartItems);
-
         res.render('cart', { title: 'Cart', cartItems: cartItems});
-
     });
 });
 
@@ -89,7 +86,7 @@ router.post('/ajax_add_item_to_cart', function(req, res) {
     var id = req.body.id;
 
     cart.addItemToCart(req.session, id);
-	
+
 	var cartCount = cart.getItemCount(req.session);
 
     res.send({success: true, cartCount : cartCount});
