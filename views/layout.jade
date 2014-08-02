@@ -12,6 +12,7 @@ html
 			link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
 			link(rel='stylesheet', href='/stylesheets/toastr.css')
 			script(type='text/javascript', src='/javascripts/jquery-2.1.1.min.js')
+			script(type='text/javascript', src='/javascripts/fastclick.js')
 			script(type='text/javascript', src='/javascripts/toastr.min.js')
 			script(type='text/javascript').
 				$(function() {
@@ -60,7 +61,7 @@ html
 		block content
 
 		div(style="position: relative")
-			div#buddyShoppingPopup(style="position: absolute; bottom: 0px; display: none; background-color: white; border: 1px solid black; width: 100%; -webkit-animation-duration: 0.2s; -moz-animation-duration: 0.2s; -ms-animation-duration: 0.2s; -o-animation-duration: 0.2s; animation-duration: 0.2s; height: 200px; ")
+			div#buddyShoppingPopup(style="display: none;")
 		
 		div#buddyShoppingButtonContainer
 			button#buddyShoppingButton.btn.btn-block
