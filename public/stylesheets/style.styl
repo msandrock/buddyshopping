@@ -88,3 +88,68 @@ header
 #qrCodeContainer img
 	margin-top: 20px;
 	display: inline !important;
+
+#chat
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 250px;
+
+
+#chat-top   
+	height: 38px;
+	background-color: #DDD;
+	padding: 1px 10px;
+	cursor: pointer; 
+
+.active#chat
+	background-color: #3A5AFB;
+
+#chat-content
+	height: 300px;
+	padding-top: 5px;
+	background-color: #EDEFF4;
+	border-left: 1px solid #DDD;
+	border-right: 1px solid #DDD;
+
+#chat-input
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+
+.chat-entry
+	position: relative;
+	width: 80%;
+	margin-left: 15px;
+	margin-top: 5px;
+	padding: 10px;
+	background: #FFFFFF;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+
+
+.chat-entry.chat-self-entry:after
+	border-width: 10px 0px 10px 10px !important;
+	left: auto;
+	right: -10px;
+
+
+.chat-entry:after
+	content: "";
+	position: absolute;
+	top: 9px;
+	left: -10px;
+	
+	border-style: solid;
+	border-width: 10px 10px 10px 0px !important;
+	border-color: transparent #FFFFFF;
+	display: block;
+	width: 0;
+	z-index: 1;
+
+#chat-message
+	overflow: auto;
+	height: 270px;
+
+	

@@ -54,4 +54,8 @@ function createSocket(){
 
 		buddyList.addContent(wrapper);
 	});
+	
+	socket.on('chatMessage', function(msg) {
+		chat.handeChatMessage(msg);
+	});
 }
