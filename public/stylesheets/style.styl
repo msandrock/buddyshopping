@@ -53,18 +53,21 @@ header
 	left: 0px;
 	right: 0px;
 
-#buddyListClosed
-    display: block;
+buddyList()
+    background-color: #eee;
     position: fixed;
     padding: 0 6px 6px 6px;
-    top: 100px;
-    right: 0;
-    background-color: #ddd;
-    width: 20px;
-    height: 400px;
+    height: 400px
     -webkit-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
     -moz-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
     box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
+    top: 100px;
+    right: 0;
+
+#buddyListClosed
+    buddyList()
+    display: block;
+    width: 20px;
     h4
         -webkit-transform: rotate(270deg);
         -moz-transform: rotate(270deg);
@@ -75,17 +78,9 @@ header
         width: 130px;
 
 #buddyListOpen
+    buddyList()
     display: none;
-    position: fixed;
-    padding: 0 6px 6px 6px;
-    top: 100px;
-    right: 0;
-    background-color: #ddd;
     width: 240px;
-    height: 400px
-    -webkit-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
-    -moz-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
-    box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
 
 #buddyMessages
     height: 320px;
@@ -123,12 +118,10 @@ header
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 
-
 .chat-entry.chat-self-entry:after
 	border-width: 10px 0px 10px 10px !important;
 	left: auto;
 	right: -10px;
-
 
 .chat-entry:after
 	content: "";
