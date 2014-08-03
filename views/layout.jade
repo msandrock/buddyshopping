@@ -45,6 +45,9 @@ html
 					div.navbar-collapse.collapse#header-navbar-collapse
 						ul.nav.navbar-nav.navbar-right
 							li
+								button#buddyShoppingButton
+									| Start / join session
+							li
 								a#userName(href='#') Username
 							li
 								a(href='/login') Login
@@ -66,10 +69,6 @@ html
 			div#buddyShoppingPopup(style="display: none;")
 
 		div#buddyShoppingPopupMask(style="display: none;")
-
-		div#buddyShoppingButtonContainer(style="margin-top: 20px;")
-			button#buddyShoppingButton.btn.btn-block
-				| Buddy Shopping
 
 		div#buddyListOpen
 			h4 My buddys&nbsp;
