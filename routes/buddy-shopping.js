@@ -5,7 +5,7 @@ var ipAddress = require('../ipaddress.js').ipAddress;
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
-	data.getBuddygroupId(req.sessionID, function(error, buddygroupId) {
+	data.getBuddygroupId(req.sessionID, "Mark Zuckerberg" ,function(error, buddygroupId) {
 		if (error) {
 			var err = new Error(error);
 			err.status = 500;
