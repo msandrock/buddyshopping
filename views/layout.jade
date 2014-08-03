@@ -35,11 +35,11 @@ html
 					div.navbar-header
 						a.navbar-brand(href="/")
 							| BuddyShopping
-						if discountActive
+						if activeDiscount
 							div.navbar-brand(style="font-size: 70%; margin-top: -10px")
 								| BuddyShopping discount active
 								br
-								| TIMER
+								| TIMER #{activeDiscount.endTimestamp} / #{now}
 						button.navbar-toggle(type="button", data-toggle="collapse", data-target="#header-navbar-collapse")
 							span.sr-only
 								| Toggle navigation

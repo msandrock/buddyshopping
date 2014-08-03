@@ -222,7 +222,7 @@ function getRandomName(){
 exports.getActiveBuddygroupDiscount = function(sessionId, callback) {
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
 	Buddygroup.findOne({ "memberSessions.memberSessionId" : sessionId }, function(error, data) {
-		var now = new Date().getTime() / 1000;
+		var now = Math.floor(new Date().getTime() / 1000);
 		if (error || !data || data.discountEndTimestamp < now) {
 			callback(error, null);
 		} else {
