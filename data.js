@@ -33,7 +33,7 @@ var orderSchema = mongoose.Schema({
     	linePrice: Number
 	})],
 	total : Number,
-	buddygroupId : String,
+	buddygroupId : { type: [String], index: true },
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));

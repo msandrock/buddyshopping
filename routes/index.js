@@ -120,6 +120,21 @@ router.post('/ajax_add_item_to_cart', function(req, res) {
 });
 
 //
+// Updates the users username in the session and the buddy group
+//
+router.post('/ajax_set_username', function(req, res) {
+
+	// Store the username in session; Update it in the buddygroup
+	var userName = req.body.userName;
+
+	req.session.userName = userName;
+
+	// TODO: Update the username in the buddygroup
+	
+	res.send({success: true});
+});
+
+//
 // shown after successful checkout
 //
 router.get('/checkout-success', function(req, res, next) {
