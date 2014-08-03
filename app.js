@@ -51,6 +51,7 @@ app.use(function(req, res, next) {
 		} else {
 			res.locals.discountTimeLeft = -1;
 		}
+		
 		next();
 	});
 });
