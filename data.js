@@ -274,7 +274,11 @@ exports.getOrderProcessingDataForBackend = function(orderId, callback) {
 					// TODO timestamp
 					var buddygroupTotal = 0;
 					for (var i in buddygroupOrders) {
-						buddygroupTotal += buddygroupOrders[i].total;
+						var otherOrder = buddygroupOrders[i];
+						var timestampDelta = Math.abs(order.createdTimestamp - otherOrder.createdTimestamp);
+						if (timestampDelta < 3600) {
+							buddygroupTotal += otherOrder.total;
+						}
 					}
 					callback(null, {
 						order: order,
