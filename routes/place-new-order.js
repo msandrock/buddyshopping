@@ -29,7 +29,7 @@ router.post('/', function(req, res, next) {
     		items: orderItems,
     		total: orderTotal
     	};
-    	data.getBuddygroupId(req.sessionID, function(error, buddygroupId) {
+    	data.getBuddygroupId(req.session,req.sessionID, function(error, buddygroupId) {
     		if (error) {
     			next(error);
     		} else {
