@@ -129,7 +129,12 @@ router.post('/ajax_set_username', function(req, res) {
 
 	req.session.userName = userName;
 
-	// TODO: Update the username in the buddygroup
+	
+	data.changeUserName(req.session, req.sessionID, "Testi Testmann", function(error){
+		if(!error) {
+			// TODO: Do something when username is changed
+		}
+	});
 	
 	res.send({success: true});
 });
