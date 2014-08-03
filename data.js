@@ -211,6 +211,22 @@ function getRandomName(){
 }
 
 //
+// Fetches information about an active buddygroup discount, if any
+//
+exports.getActiveBuddygroupDiscount = function(sessionId, callback) {
+	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+	Buddygroup.findOne({ "memberSessions.memberSessionId" : sessionId }, function(error, data) {
+		var now = new Date().getTime() / 1000;
+		if (error || !data || data.discountEndTimestamp < now) {
+			callback(error, null);
+		} else {
+			callback(null, {endTimestamp: data.discountEndTimestamp});
+		}
+	});
+}
+
+
+//
 // creates a new order
 //
 exports.createOrder = function(inputOrderData, callback) {
