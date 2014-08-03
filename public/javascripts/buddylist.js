@@ -20,16 +20,24 @@ $(function() {
 
     // Open the bootbox to update the username
     $('#userName').click(function(e){
-        bootbox.prompt("Geben Sie Ihren Benutzernamen ein", function(e) {
-            if(e != null && e != '') {
+        bootbox.prompt("Geben Sie Ihren Benutzernamen ein", function(userName) {
+            if(userName != null && userName != '') {
                 // Set the username caption
-                $('#userName').text(e);
+                $('#userName').text(userName);
                 // Store it in LS
                 if (typeof(localStorage) != 'undefined') {
-                    localStorage.setItem('userName', e);
+                    localStorage.setItem('userName', userName);
                 }
 
-                // TODO: If in buddygroup, send it to the server, to update the session
+                // If in buddygroup, send it to the server, to update the session
+                $.post("/ajax_set_username", { userName: userName }, function(data){
+
+                    // Just do nothing
+
+                }, 'json').error(function(){
+                    console.log("errror");
+                    toastr.error('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut');
+                });
             }
         });
     });
