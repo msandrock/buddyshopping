@@ -4,8 +4,17 @@ var data = require('../data.js');
 var ipAddress = require('../ipaddress.js').ipAddress;
 var router = express.Router();
 
+//
+// Load the popup contents to start or join a buddy shopping session
+//
 router.get('/', function(req, res, next) {
-	data.getBuddygroupId(req.sessionID, function(error, buddygroupId) {
+	// Update the user name in session
+	if(req.query.userName) {
+		req.session.userName = req.query.userName;
+	}
+
+	data.getBuddygroupId(req.sessionID, req.query.userName ,function(error, buddygroupId) {
+
 		if (error) {
 			var err = new Error(error);
 			err.status = 500;
@@ -13,7 +22,7 @@ router.get('/', function(req, res, next) {
 		} else {
 			res.render('buddy-shopping', {
 				buddygroupId: buddygroupId,
-				qrCodeUrl: 'http://' + ipAddress + ':1337/buddy-join?buddygroupId=' + buddygroupId
+				qrCodeUrl: 'http://' + ipAddress + ':' + config.global.port + '/buddy-join?buddygroupId=' + buddygroupId
 			});
 		}
 	});
@@ -24,7 +33,7 @@ router.post('/', function(req, res, next) {
 		res.redirect(req.referer || '/');
 	}
 	if (req.body.buddygroupId) {
-		data.joinBuddygroup(req.sessionID, req.body.buddygroupId, redirect);
+		data.joinBuddygroup(req.sessionID, req.body.buddygroupId, "Mark Zuckerberg" ,redirect);
 	} else {
 		redirect();
 	}
