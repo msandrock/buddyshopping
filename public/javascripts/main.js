@@ -1,5 +1,28 @@
 $(document).ready(function(){
 	createSocket();
+	
+	var $button = $('#buddyShoppingButton');
+	var $popup = $('#buddyShoppingPopup');
+	var $mask = $('#buddyShoppingPopupMask');
+	$button.click(function() {
+		
+		$popup.load('/buddy-shopping', function(){
+
+			createSocket();
+
+		});
+		$popup.removeClass('fadeOutDown').addClass('animated fadeInUp').css('display', '');
+		$mask.css('display', '');
+	});
+	
+	$mask.click(function() {
+		$popup.removeClass('fadeInUp').addClass('animated fadeOutDown');
+		$popup.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+			$popup.css('display', 'none');
+		});
+		$mask.css('display', 'none');
+	});
+	
 
 });
 
@@ -33,7 +56,7 @@ function createSocket(){
 	});
 	
 	socket.on("placeNewOrder", function(msg) {
-		//TODO 
+		buddyList.placeNewOrder(msg);
 	});
 	
 	socket.on('chatMessage', function(msg) {
