@@ -24,29 +24,9 @@ html
 			script(type='text/javascript', src='/javascripts/toastr.min.js')
 			script(type='text/javascript', src='/javascripts/jquery.equalheights.min.js')
 			script(type='text/javascript', src='/javascripts/qrcode.js')
+			script(type='text/javascript', src='/javascripts/bootbox.min.js')
 			script(type='text/javascript', src='/socket.io/socket.io.js')
-			script(type='text/javascript').
-				$(function() {
-					var $button = $('#buddyShoppingButton');
-					var $popup = $('#buddyShoppingPopup');
-					var $mask = $('#buddyShoppingPopupMask');
-					$button.click(function() {
-						$popup.load('/buddy-shopping', function(){
 
-							createSocket();
-
-						});
-						$popup.removeClass('fadeOutDown').addClass('animated fadeInUp').css('display', '');
-						$mask.css('display', '');
-					});
-					$mask.click(function() {
-						$popup.removeClass('fadeInUp').addClass('animated fadeOutDown');
-						$popup.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
-							$popup.css('display', 'none');
-						});
-						$mask.css('display', 'none');
-					});
-				});
 
 	body
 		header#header

@@ -116,6 +116,10 @@ function BuddyList() {
 	this.handeChatMessage = function(msg) {
 		buddyList.addContent(this._chatMessage(msg));
 	}
+		
+	this.placeNewOrder = function(msg) {
+		buddyList.addContent(this._placeNewOrderMessage(msg));
+	}
 
     //
     // Clear the message list
@@ -209,6 +213,15 @@ function BuddyList() {
         return wrapper;
     }
 
+	this._placeNewOrderMessage = function(msg){
+		
+		var wrapper = document.createElement('span');
+        var title = document.createTextNode("Ein Benutzer hat für " + msg.total + "€ eingekauft");
+
+        wrapper.appendChild(title);
+        return wrapper;
+		
+	}
 
 }
 
