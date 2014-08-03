@@ -6,7 +6,9 @@ var url = require('url');
 var router = express.Router();
 var websocketsHandler = require('../websockets-handler');
 
-/* GET home page. */
+//
+// GET the home page
+//
 router.get('/', function(req, res) {
 
 	var cartCount = cart.getItemCount(req.session);
@@ -19,9 +21,11 @@ router.get('/', function(req, res) {
 			console.log(err);
 		}
 	});
-
 });
 
+//
+// GET the item details page
+//
 router.get('/details/*', function(req, res) {
 	// Extract the item id from the url
 	var id = req.params[0];
@@ -36,11 +40,13 @@ router.get('/details/*', function(req, res) {
 			console.log(err);
 		}
 	});
-
-	
 });
 
+//
+// GET the cart view
+//
 router.get('/cart', function(req, res) {
+
 	// Get all cart items and return them to the view
 	var cartItems = cart.getCartItems(req.session);
 	// Get all corresponding items from the database
@@ -49,22 +55,6 @@ router.get('/cart', function(req, res) {
 	var cartCount = cart.getItemCount(req.session);
 
 	data.getItemsById(ids, function(err, items) {
-
-		/*var viewItems = [];
-
-		for(var i = 0 ; i < items.length ; i++) {
-			// Construct a new object
-			var viewItem = {
-				_id : items[i]._id,
-				name : items[i].name,
-				description : items[i].description,
-				imageUrl : items[i].imageUrl,
-				quantity : 5
-			};
-
-			viewItems.push(viewItem);
-		}*/
-
 		// Add quantity from cart items
 		cartItems = _.map(items, function(item) {
 			// Find the cart items quantity
@@ -77,7 +67,7 @@ router.get('/cart', function(req, res) {
 				price : item.price,
 				imageUrl : item.imageUrl,
 				quantity : cartItem.quantity,
-				total : item.price * cartItem.quantity
+				subTotal : item.price * cartItem.quantity
 			};
 		});
 
@@ -85,6 +75,9 @@ router.get('/cart', function(req, res) {
 	});
 });
 
+//
+// GET the checkout view
+//
 router.get('/checkout', function(req, res) {
 	// Get all cart items and return them to the view
 
@@ -118,14 +111,12 @@ router.post('/ajax_add_item_to_cart', function(req, res) {
 	var cartCount = cart.getItemCount(req.session);
 
 	res.send({success: true, cartCount : cartCount});
-	
+
 	data.getItemById(id, function(err, item) {
 		if(!err) {
 			websocketsHandler.sendToGroupBySessionId(req.sessionID, "addToCart", item[0]);
 		}
 	});
-	
-
 });
 
 //

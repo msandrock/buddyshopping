@@ -20,7 +20,9 @@ var buddygroupSchema = mongoose.Schema({
 			memberSessionId: String,
 			name: String
 		})
-	]
+	],
+	totalAmount : Number,
+	discountEndTimestamp : Number
 });
 
 var orderSchema = mongoose.Schema({
@@ -106,14 +108,20 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 //
 // Returns the ID of the user's buddy group
 //
-exports.getBuddygroupId = function(sessionId, callback) {
+exports.getBuddygroupId = function(sessionId, name ,callback) {
+	
+	var currentMemberSession = {
+		memberSessionId: sessionId,
+		name: name
+	};
+	
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-	Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
+	Buddygroup.findOne({ "memberSessions.memberSessionId" : sessionId }, function(error, data) {
 		if (error || data) {
 			callback(error, data._id);
 		} else {
 			var buddygroupId = crypto.randomBytes(12).toString('hex');
-			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
+			Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
 				callback(error, data ? data._id : null);
 			});
 		}
@@ -125,7 +133,7 @@ exports.getBuddygroupId = function(sessionId, callback) {
 //
 exports.ifIsBodyGroupJoined = function(sessionId, callback) {
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-	Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
+	Buddygroup.findOne({ "memberSessions.memberSessionId" : sessionId }, function(error, data) {
 		if(data)
 			callback(error, data._id, true);
 		else
@@ -141,10 +149,10 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, username ,callback) {
 	var currentMemberSession = {
 		memberSessionId: sessionId,
 		name: username
-	}
+	};
 	
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-	Buddygroup.update({ 'memberSession.memberSessionId' : sessionId }, {$pull: {'memberSession.memberSessionId' : sessionId}}, {}, function(error, numberAffected, rawResponse) {
+	Buddygroup.update({ 'memberSessions.memberSessionId' : sessionId }, {$pull: {'memberSessions' : {"memberSessionId": sessionId}}}, {}, function(error, numberAffected, rawResponse) {
 		if (error) {
 			callback(error);
 		} else {
@@ -152,12 +160,11 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, username ,callback) {
 				if (error) {
 					callback(error);
 				} else if (!data) {
-					
-					Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession]}, function(error, data) {
+					Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
 						callback(error);
 					});
-				} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
-					Buddygroup.update({_id: buddygroupId}, {$push: {memberSession: currentMemberSession}}, {}, function(error, numberAffected, rawResponse) {
+				} else if (_.indexOf(data.currentMemberSession, sessionId) == -1) {
+					Buddygroup.update({_id: buddygroupId}, {$push: {memberSessions: currentMemberSession}}, {}, function(error, numberAffected, rawResponse) {
 						callback(error);
 						if(!error) {
 							websocketsHandler.sendToGroup(buddygroupId, "joined", {text: "Ein Benutzer ist beigetreten"});
@@ -178,9 +185,35 @@ function getRandomName(){
 //
 // creates a new order
 //
-exports.createOrder = function(data, callback) {
+exports.createOrder = function(inputOrderData, callback) {
 	var Order = mongoose.model('Order', orderSchema);
-	Order.create(data, callback);
+	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+	Order.create(inputOrderData, function(error, order) {
+		if (error) {
+			callback(error);
+		} else {
+			Buddygroup.findOne({ _id : inputOrderData.buddygroupId }, function(error, buddygroup) {
+				if (error || !buddygroup) {
+					callback(null, order);
+				} else {
+					var now = Math.floor(new Date().getTime() / 1000);
+					if (buddygroup.discountEndTimestamp < now) {
+						buddygroup.totalAmount = 0;
+					}
+					buddygroup.totalAmount += order.total;
+					buddygroup.discountEndTimestamp = (now + 3600);
+					Buddygroup.update(
+						{ _id: inputOrderData.buddygroupId },
+						{ totalAmount: buddygroup.totalAmount, discountEndTimestamp: buddygroup.discountEndTimestamp},
+						{},
+						function(error, _dummy) {
+							callback(null, order);
+						}
+					);
+				}
+			});
+		}
+	});
 };
 
 //
