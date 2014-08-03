@@ -16,7 +16,7 @@ var itemSchema = mongoose.Schema({
 var buddygroupSchema = mongoose.Schema({
 	memberSessionIds : { type: [String], index: true },
 	totalAmount : Number,
-	discountEndTimestamp : Date,
+	discountEndTimestamp : Number,
 });
 
 var orderSchema = mongoose.Schema({
@@ -109,7 +109,7 @@ exports.getBuddygroupId = function(sessionId, callback) {
 			callback(error, data._id);
 		} else {
 			var buddygroupId = crypto.randomBytes(12).toString('hex');
-			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0, discountEndTimestamp: new Date(0)}, function(error, data) {
+			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
 				callback(error, data ? data._id : null);
 			});
 		}
@@ -142,7 +142,7 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 				if (error) {
 					callback(error);
 				} else if (!data) {
-					Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0, discountEndTimestamp: new Date(0)}, function(error, data) {
+					Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
 						callback(error);
 					});
 				} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
@@ -163,9 +163,35 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 //
 // creates a new order
 //
-exports.createOrder = function(data, callback) {
+exports.createOrder = function(inputOrderData, callback) {
 	var Order = mongoose.model('Order', orderSchema);
-	Order.create(data, callback);
+	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+	Order.create(inputOrderData, function(error, order) {
+		if (error) {
+			callback(error);
+		} else {
+			Buddygroup.findOne({ _id : inputOrderData.buddygroupId }, function(error, buddygroup) {
+				if (error || !buddygroup) {
+					callback(null, order);
+				} else {
+					var now = Math.floor(new Date().getTime() / 1000);
+					if (buddygroup.discountEndTimestamp < now) {
+						buddygroup.totalAmount = 0;
+					}
+					buddygroup.totalAmount += order.total;
+					buddygroup.discountEndTimestamp = (now + 3600);
+					Buddygroup.update(
+						{ _id: inputOrderData.buddygroupId },
+						{ totalAmount: buddygroup.totalAmount, discountEndTimestamp: buddygroup.discountEndTimestamp},
+						{},
+						function(error, _dummy) {
+							callback(null, order);
+						}
+					);
+				}
+			});
+		}
+	});
 };
 
 //
