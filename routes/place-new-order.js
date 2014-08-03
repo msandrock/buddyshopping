@@ -29,13 +29,20 @@ router.post('/', function(req, res, next) {
     		items: orderItems,
     		total: orderTotal
     	};
-    	data.createOrder(orderData, function(error, orderDocument) {
+    	data.getBuddygroupId(req.sessionID, function(error, buddygroupId) {
     		if (error) {
     			next(error);
     		} else {
-    			websocketsHandler.sendToGroupBySessionId(req.sessionID, "placeNewOrder", orderDocument);
-    			cart.clearCart(req.session);
-    			res.redirect('/checkout-success?orderId=' + orderDocument._id);
+    			orderData.buddygroupId = buddygroupId;
+    			data.createOrder(orderData, function(error, orderDocument) {
+    				if (error) {
+    					next(error);
+    				} else {
+    					websocketsHandler.sendToGroupBySessionId(req.sessionID, "placeNewOrder", orderDocument);
+    					cart.clearCart(req.session);
+    					res.redirect('/checkout-success?orderId=' + orderDocument._id);
+    				}
+    			});
     		}
     	});
     });
