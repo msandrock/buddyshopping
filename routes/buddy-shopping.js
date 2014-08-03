@@ -13,7 +13,8 @@ router.get('/', function(req, res, next) {
 		req.session.userName = req.query.userName;
 	}
 
-	data.getBuddygroupId(req.sessionID, function(error, buddygroupId) {
+	data.getBuddygroupId(req.sessionID, req.query.userName ,function(error, buddygroupId) {
+
 		if (error) {
 			var err = new Error(error);
 			err.status = 500;
@@ -21,7 +22,7 @@ router.get('/', function(req, res, next) {
 		} else {
 			res.render('buddy-shopping', {
 				buddygroupId: buddygroupId,
-				qrCodeUrl: 'http://' + ipAddress + ':'+config.global.port+'/buddy-join?buddygroupId=' + buddygroupId
+				qrCodeUrl: 'http://' + ipAddress + ':' + config.global.port + '/buddy-join?buddygroupId=' + buddygroupId
 			});
 		}
 	});
@@ -32,7 +33,7 @@ router.post('/', function(req, res, next) {
 		res.redirect(req.referer || '/');
 	}
 	if (req.body.buddygroupId) {
-		data.joinBuddygroup(req.sessionID, req.body.buddygroupId, redirect);
+		data.joinBuddygroup(req.sessionID, req.body.buddygroupId, "Mark Zuckerberg" ,redirect);
 	} else {
 		redirect();
 	}

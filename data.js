@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var crypto = require('crypto');
 var _ = require('underscore');
 var websocketsHandler = require('./websockets-handler');
+var randomNames = require('./random-names');
 
 var db = mongoose.connection;
 
@@ -14,9 +15,14 @@ var itemSchema = mongoose.Schema({
 });
 
 var buddygroupSchema = mongoose.Schema({
-	memberSessionIds : { type: [String], index: true },
+	memberSessions : [
+		mongoose.Schema({
+			memberSessionId: String,
+			name: String
+		})
+	],
 	totalAmount : Number,
-	discountEndTimestamp : Number,
+	discountEndTimestamp : Number
 });
 
 var orderSchema = mongoose.Schema({
@@ -102,14 +108,20 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 //
 // Returns the ID of the user's buddy group
 //
-exports.getBuddygroupId = function(sessionId, callback) {
+exports.getBuddygroupId = function(sessionId, name ,callback) {
+	
+	var currentMemberSession = {
+		memberSessionId: sessionId,
+		name: name
+	};
+	
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-	Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
+	Buddygroup.findOne({ "memberSessions.memberSessionId" : sessionId }, function(error, data) {
 		if (error || data) {
 			callback(error, data._id);
 		} else {
 			var buddygroupId = crypto.randomBytes(12).toString('hex');
-			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
+			Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
 				callback(error, data ? data._id : null);
 			});
 		}
@@ -121,7 +133,7 @@ exports.getBuddygroupId = function(sessionId, callback) {
 //
 exports.ifIsBodyGroupJoined = function(sessionId, callback) {
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-	Buddygroup.findOne({ memberSessionIds : sessionId }, function(error, data) {
+	Buddygroup.findOne({ "memberSessions.memberSessionId" : sessionId }, function(error, data) {
 		if(data)
 			callback(error, data._id, true);
 		else
@@ -132,9 +144,15 @@ exports.ifIsBodyGroupJoined = function(sessionId, callback) {
 //
 // Joins a buddy group
 //
-exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
+exports.joinBuddygroup = function(sessionId, buddygroupId, username ,callback) {
+	
+	var currentMemberSession = {
+		memberSessionId: sessionId,
+		name: username
+	};
+	
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-	Buddygroup.update({ memberSessionIds : sessionId }, {$pull: {memberSessionIds : sessionId}}, {}, function(error, numberAffected, rawResponse) {
+	Buddygroup.update({ 'memberSessions.memberSessionId' : sessionId }, {$pull: {'memberSessions' : {"memberSessionId": sessionId}}}, {}, function(error, numberAffected, rawResponse) {
 		if (error) {
 			callback(error);
 		} else {
@@ -142,11 +160,11 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 				if (error) {
 					callback(error);
 				} else if (!data) {
-					Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
+					Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
 						callback(error);
 					});
-				} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
-					Buddygroup.update({_id: buddygroupId}, {$push: {memberSessionIds: sessionId}}, {}, function(error, numberAffected, rawResponse) {
+				} else if (_.indexOf(data.currentMemberSession, sessionId) == -1) {
+					Buddygroup.update({_id: buddygroupId}, {$push: {memberSessions: currentMemberSession}}, {}, function(error, numberAffected, rawResponse) {
 						callback(error);
 						if(!error) {
 							websocketsHandler.sendToGroup(buddygroupId, "joined", {text: "Ein Benutzer ist beigetreten"});
@@ -159,6 +177,10 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 		}
 	});
 };
+
+function getRandomName(){
+	return randomNames[Math.floor(Math.random()*randomNames.length)];
+}
 
 //
 // creates a new order
