@@ -1,14 +1,14 @@
 div.container(style="width: 100%; padding-bottom: 40px; ")
 
 	h1
-		| Give this code to your friends and get a discount: 
+		| Give this code to your friends and get a discount:
 		button.btn#buddygroupIdPanelToggleButton
 			| QR Code
 
 	div#buddygroupIdFormPanel.buddygroupIdPanel
 		div.well.well-lg(style="font-size: 200%; text-align: center")
 			| #{buddygroupId}
-		
+
 		h1
 			| or enter their code here:
 		form(action="/buddy-shopping", method="post", role="form")
