@@ -71,8 +71,11 @@ function createSocket(){
 		buddyList.placeNewOrder(msg);
 	});
 
+	socket.on("rename", function(msg) {
+		buddyList.rename(msg);
+	});
+
 	socket.on('chatMessage', function(msg) {
-		console.log(msg);
 		buddyList.handeChatMessage(msg);
 	});
 }

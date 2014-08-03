@@ -110,7 +110,8 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 // Returns the ID of the user's buddy group
 // The Username is only needed when user is not in a group
 //
-exports.getBuddygroupId = function(sessionId, username ,callback) {
+exports.getBuddygroupId = function(session,sessionId, username ,callback) {
+	console.log("getBuddyGroupId", username);
 	
 
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
@@ -130,6 +131,7 @@ exports.getBuddygroupId = function(sessionId, username ,callback) {
 			
 			var buddygroupId = crypto.randomBytes(12).toString('hex');
 			Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
+				session.userName = username;
 				callback(error, data ? data._id : null);
 			});
 		}
@@ -168,9 +170,9 @@ exports.changeUserName = function(session, sessionId, newUsername , callback) {
 //
 // Joins a buddy group
 //
-exports.joinBuddygroup = function(sessionId, buddygroupId, username ,callback) {
+exports.joinBuddygroup = function(session, sessionId, buddygroupId, username ,callback) {
 	
-	if(typeof username == "undefined") {
+	if(typeof username == "undefined" || username == null) {
 		username = getRandomName();
 	}
 	
@@ -190,15 +192,19 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, username ,callback) {
 				} else if (!data) {
 					Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
 						callback(error);
+						session.userName = username;
 					});
 				} else if (_.indexOf(data.currentMemberSession, sessionId) == -1) {
 					Buddygroup.update({_id: buddygroupId}, {$push: {memberSessions: currentMemberSession}}, {}, function(error, numberAffected, rawResponse) {
+						session.userName = username;
 						callback(error);
+						
 						if(!error) {
-							websocketsHandler.sendToGroup(buddygroupId, "joined", {text: "Ein Benutzer ist beigetreten"});
+							websocketsHandler.sendToGroup(buddygroupId, "joined", {text: username + " ist beigetreten"});
 						}
 					});
 				} else {
+					session.userName = username;
 					callback(null);
 				}
 			});

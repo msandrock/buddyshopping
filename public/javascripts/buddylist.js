@@ -35,7 +35,6 @@ $(function() {
                     // Just do nothing
 
                 }, 'json').error(function(){
-                    console.log("errror");
                     toastr.error('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut');
                 });
             }
@@ -161,6 +160,10 @@ function BuddyList() {
 		buddyList.addContent(this._placeNewOrderMessage(msg));
 	}
 
+	this.rename = function(msg) {
+		buddyList.addContent(this._renameMessage(msg));
+	}
+
     //
     // Clear the message list
     //
@@ -200,16 +203,20 @@ function BuddyList() {
 
         var wrapper = document.createElement('span');
         var image = document.createElement('img');
-        image.width = 40;
-        image.height = 40;
-        image.src = msg.imageUrl;
+        image.className = 'buddy-list-image';
+        image.src = msg.item.imageUrl;
 
         var link = document.createElement('a');
-        link.href = '/details/'+msg._id;
-        link.appendChild(document.createTextNode(msg.name));
+        link.href = '/details/'+msg.item._id;
+        link.appendChild(document.createTextNode(msg.username + " sieht sich das Produkt '" + msg.item.name + "' an"));
+
+        var breaker = document.createElement('div');
+        breaker.className = 'clear-left';
+        breaker.appendChild(document.createTextNode(' '));
 
         wrapper.appendChild(image);
         wrapper.appendChild(link);
+        wrapper.appendChild(breaker);
 
         return wrapper;
     }
@@ -218,16 +225,20 @@ function BuddyList() {
 
         var wrapper = document.createElement('span');
         var image = document.createElement('img');
-        image.width = 40;
-        image.height = 40;
+        image.className = 'buddy-list-image';
         image.src = msg.imageUrl;
 
         var link = document.createElement('a');
         link.href = '/details/'+msg._id;
         link.appendChild(document.createTextNode(msg.name + ' im Cart'));
 
+        var breaker = document.createElement('div');
+        breaker.className = 'clear-left';
+        breaker.appendChild(document.createTextNode(' '));
+
         wrapper.appendChild(image);
         wrapper.appendChild(link);
+        wrapper.appendChild(breaker);
 
         return wrapper;
     }
@@ -257,6 +268,16 @@ function BuddyList() {
 
 		var wrapper = document.createElement('span');
         var title = document.createTextNode("Ein Benutzer hat für " + msg.total + "€ eingekauft");
+
+        wrapper.appendChild(title);
+        return wrapper;
+
+	}
+
+	this._renameMessage = function(msg){
+
+		var wrapper = document.createElement('span');
+        var title = document.createTextNode(msg.text);
 
         wrapper.appendChild(title);
         return wrapper;

@@ -35,7 +35,8 @@ router.get('/details/*', function(req, res) {
 	data.getItemById(id, function(err, item) {
 		if(!err) {
 			res.render('details', { title: 'Express', item: item[0], cartCount : cartCount});
-			websocketsHandler.sendToGroupBySessionId(req.sessionID, "visitItem", item[0]);
+			console.log(req.session);
+			websocketsHandler.sendToGroupBySessionId(req.sessionID, "visitItem", {item:item[0], username: req.session.userName}, function(){});
 		} else {
 			console.log(err);
 		}
@@ -126,13 +127,15 @@ router.post('/ajax_set_username', function(req, res) {
 
 	// Store the username in session; Update it in the buddygroup
 	var userName = req.body.userName;
+	var oldName = req.session.userName;
 
 	req.session.userName = userName;
 
 	
-	data.changeUserName(req.session, req.sessionID, "Testi Testmann", function(error){
+	data.changeUserName(req.session, req.sessionID, userName, function(error){
 		if(!error) {
 			// TODO: Do something when username is changed
+			websocketsHandler.sendToGroupBySessionId(req.sessionID, "rename", {text: oldName + " heißt jetzt " + userName});
 		}
 	});
 	
