@@ -72,12 +72,10 @@ function createSocket(){
 	});
 
 	socket.on("rename", function(msg) {
-		console.log(msg);
 		buddyList.rename(msg);
 	});
 
 	socket.on('chatMessage', function(msg) {
-		console.log(msg);
 		buddyList.handeChatMessage(msg);
 	});
 }

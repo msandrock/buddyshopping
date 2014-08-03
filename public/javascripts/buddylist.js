@@ -35,7 +35,6 @@ $(function() {
                     // Just do nothing
 
                 }, 'json').error(function(){
-                    console.log("errror");
                     toastr.error('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut');
                 });
             }
@@ -201,7 +200,6 @@ function BuddyList() {
     }
 
     this._visitItemMessage = function(msg) {
-		console.log(msg);
 
         var wrapper = document.createElement('span');
         var image = document.createElement('img');

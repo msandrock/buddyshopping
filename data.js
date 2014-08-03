@@ -111,6 +111,7 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 // The Username is only needed when user is not in a group
 //
 exports.getBuddygroupId = function(session,sessionId, username ,callback) {
+	console.log("getBuddyGroupId", username);
 	
 
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
