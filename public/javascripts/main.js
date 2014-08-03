@@ -1,12 +1,24 @@
 $(document).ready(function(){
 	createSocket();
-	
+
 	var $button = $('#buddyShoppingButton');
 	var $popup = $('#buddyShoppingPopup');
 	var $mask = $('#buddyShoppingPopupMask');
 	$button.click(function() {
-		
-		$popup.load('/buddy-shopping', function(){
+
+		var popupUrl = '/buddy-shopping';
+
+		// Check the username; Send it to the server as a get parameter
+		if(typeof(localStorage) != 'undefined') {
+
+			var userName = localStorage.getItem('userName');
+
+			if(userName != null) {
+				popupUrl += '?userName='+userName;
+			}
+		}
+
+		$popup.load(popupUrl, function(){
 
 			createSocket();
 
@@ -14,7 +26,7 @@ $(document).ready(function(){
 		$popup.removeClass('fadeOutDown').addClass('animated fadeInUp').css('display', '');
 		$mask.css('display', '');
 	});
-	
+
 	$mask.click(function() {
 		$popup.removeClass('fadeInUp').addClass('animated fadeOutDown');
 		$popup.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
@@ -22,7 +34,7 @@ $(document).ready(function(){
 		});
 		$mask.css('display', 'none');
 	});
-	
+
 
 });
 
@@ -54,11 +66,11 @@ function createSocket(){
 	socket.on('reconnect', function(msg) {
 
 	});
-	
+
 	socket.on("placeNewOrder", function(msg) {
 		buddyList.placeNewOrder(msg);
 	});
-	
+
 	socket.on('chatMessage', function(msg) {
 		console.log(msg);
 		buddyList.handeChatMessage(msg);
