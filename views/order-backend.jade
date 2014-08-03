@@ -1,0 +1,11 @@
+doctype html
+html
+	head
+		block htmlHead
+			title= title
+
+	body
+		div Order ID: #{orderId}
+		div Original order total: #{orderTotal}
+		div Discount: #{discount} (#{discountPercent} %)
+		div Final order total: #{reducedOrderTotal}
