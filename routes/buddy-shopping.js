@@ -12,8 +12,9 @@ router.get('/', function(req, res, next) {
 	if(req.query.userName) {
 		req.session.userName = req.query.userName;
 	}
+	console.log(req.session);
 
-	data.getBuddygroupId(req.sessionID, req.query.userName ,function(error, buddygroupId) {
+	data.getBuddygroupId(req.session, req.sessionID, req.query.userName ,function(error, buddygroupId) {
 
 		if (error) {
 			var err = new Error(error);
@@ -33,7 +34,10 @@ router.post('/', function(req, res, next) {
 		res.redirect(req.referer || '/');
 	}
 	if (req.body.buddygroupId) {
-		data.joinBuddygroup(req.sessionID, req.body.buddygroupId, "Mark Zuckerberg" ,redirect);
+		data.joinBuddygroup(req.session, req.sessionID, req.body.buddygroupId, null ,function(){
+			console.log(req.session);
+			redirect();
+		});
 	} else {
 		redirect();
 	}
