@@ -36,7 +36,7 @@ router.get('/details/*', function(req, res) {
         }
     });
 
-	
+
 });
 
 router.get('/cart', function(req, res) {
@@ -48,21 +48,6 @@ router.get('/cart', function(req, res) {
     var cartCount = cart.getItemCount(req.session);
 
     data.getItemsById(ids, function(err, items) {
-
-        /*var viewItems = [];
-
-        for(var i = 0 ; i < items.length ; i++) {
-            // Construct a new object
-            var viewItem = {
-                _id : items[i]._id,
-                name : items[i].name,
-                description : items[i].description,
-                imageUrl : items[i].imageUrl,
-                quantity : 5
-            };
-
-            viewItems.push(viewItem);
-        }*/
 
         // Add quantity from cart items
         cartItems = _.map(items, function(item) {
@@ -76,7 +61,7 @@ router.get('/cart', function(req, res) {
                 price : item.price,
                 imageUrl : item.imageUrl,
                 quantity : cartItem.quantity,
-				total : item.price * cartItem.quantity
+				subTotal : item.price * cartItem.quantity
             };
         });
 
@@ -118,13 +103,13 @@ router.post('/ajax_add_item_to_cart', function(req, res) {
 	var cartCount = cart.getItemCount(req.session);
 
     res.send({success: true, cartCount : cartCount});
-	
+
 	data.getItemById(id, function(err, item) {
         if(!err) {
 			websocketsHandler.sendToGroupBySessionId(req.sessionID, "addToCart", item[0]);
         }
 	});
-	
+
 
 });
 
