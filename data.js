@@ -109,7 +109,7 @@ exports.getBuddygroupId = function(sessionId, callback) {
 			callback(error, data._id);
 		} else {
 			var buddygroupId = crypto.randomBytes(12).toString('hex');
-			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0}, function(error, data) {
+			Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0, discountEndTimestamp: new Date(0)}, function(error, data) {
 				callback(error, data ? data._id : null);
 			});
 		}
@@ -142,7 +142,7 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 				if (error) {
 					callback(error);
 				} else if (!data) {
-					Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0}, function(error, data) {
+					Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId], totalAmount: 0, discountEndTimestamp: new Date(0)}, function(error, data) {
 						callback(error);
 					});
 				} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
