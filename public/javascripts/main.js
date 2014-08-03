@@ -32,6 +32,10 @@ function createSocket(){
 
 	});
 	
+	socket.on("placeNewOrder", function(msg) {
+		//TODO 
+	});
+	
 	socket.on('chatMessage', function(msg) {
 		console.log(msg);
 		buddyList.handeChatMessage(msg);
