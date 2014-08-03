@@ -45,7 +45,7 @@ app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
 	data.getActiveBuddygroupDiscount(req.sessionID, function(error, activeDiscount) {
-		var now = Math.floor(new Date().getTime() / 1000);
+		var now = res.locals.now = Math.floor(new Date().getTime() / 1000);
 		if (activeDiscount && activeDiscount.endTimestamp > now) {
 			res.locals.activeDiscount = activeDiscount;
 		} else {
