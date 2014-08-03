@@ -108,19 +108,26 @@ createItem('Apple MacBook Pro', 'Gehäuse: Präzisions-Unibody-Aluminiumgehäuse
 
 //
 // Returns the ID of the user's buddy group
+// The Username is only needed when user is not in a group
 //
-exports.getBuddygroupId = function(sessionId, name ,callback) {
+exports.getBuddygroupId = function(sessionId, username ,callback) {
 	
-	var currentMemberSession = {
-		memberSessionId: sessionId,
-		name: name
-	};
-	
+
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
 	Buddygroup.findOne({ "memberSessions.memberSessionId" : sessionId }, function(error, data) {
 		if (error || data) {
 			callback(error, data._id);
 		} else {
+			
+			if(typeof username == "undefined") {
+				username = getRandomName();
+			}
+			
+			var currentMemberSession = {
+				memberSessionId: sessionId,
+				name: username
+			};
+			
 			var buddygroupId = crypto.randomBytes(12).toString('hex');
 			Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession], totalAmount: 0, discountEndTimestamp: 0}, function(error, data) {
 				callback(error, data ? data._id : null);
@@ -143,9 +150,29 @@ exports.ifIsBodyGroupJoined = function(sessionId, callback) {
 };
 
 //
+// Returns the ID of the user's buddy group
+//
+exports.changeUserName = function(session, sessionId, newUsername , callback) {
+	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+	console.log(sessionId);
+	
+	Buddygroup.update({ 'memberSessions.memberSessionId' : sessionId }, {$set:{'memberSessions.$.name': newUsername}}, {}, function(error, numberAffected, rawResponse) {
+		console.log(error);
+		callback(error, null, false);
+	});
+};
+
+
+
+
+//
 // Joins a buddy group
 //
 exports.joinBuddygroup = function(sessionId, buddygroupId, username ,callback) {
+	
+	if(typeof username == "undefined") {
+		username = getRandomName();
+	}
 	
 	var currentMemberSession = {
 		memberSessionId: sessionId,
