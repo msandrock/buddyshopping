@@ -6,6 +6,7 @@ var logger = require('morgan');
 cookieParser = require('cookie-parser');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+var data = require('./data.js');
 sessionStore = new session.MemoryStore();
 
 var app = express();
@@ -42,6 +43,17 @@ app.use(session({
     }));
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(req, res, next) {
+	data.getActiveBuddygroupDiscount(req.sessionID, function(error, activeDiscount) {
+		var now = Math.floor(new Date().getTime() / 1000);
+		if (activeDiscount && activeDiscount.endTimestamp > now) {
+			res.locals.activeDiscount = activeDiscount;
+		} else {
+			res.locals.activeDiscount = null;
+		}
+		next();
+	});
+});
 
 //socket io
 io.on('connection', websocketsHandler.handleConnect);
