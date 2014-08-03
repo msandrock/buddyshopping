@@ -21,6 +21,7 @@ var test_vomhoff = require('./routes/test-vomhoff');
 var buddy_shopping = require('./routes/buddy-shopping');
 var buddy_join = require('./routes/buddy-join');
 var place_new_order = require('./routes/place-new-order');
+var order_backend = require('./routes/order-backend');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -53,6 +54,7 @@ app.use('/test-vomhoff', test_vomhoff);
 app.use('/buddy-shopping', buddy_shopping);
 app.use('/buddy-join', buddy_join);
 app.use('/place-new-order', place_new_order);
+app.use('/order-backend', order_backend);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

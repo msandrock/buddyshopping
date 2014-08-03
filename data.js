@@ -27,7 +27,7 @@ var orderSchema = mongoose.Schema({
     	linePrice: Number
 	})],
 	total : Number,
-	buddygroupId : { type: [String], index: true },
+	buddygroupId : { type: String, index: true },
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -200,4 +200,38 @@ exports.createOrder = function(inputOrderData, callback) {
 exports.getOrder = function(orderId, callback) {
 	var Order = mongoose.model('Order', orderSchema);
 	Order.findOne({ _id : orderId }, callback);
+};
+
+//
+// Fetches an order as well as orders that are related via a buddygroup.
+// This function does not use the buddygroups table from the database since that
+// table might have started a new set of related orders in the meantime, which
+// might not be related to the order we are processing. Instead, it simply
+// fetches orders with the same buddygroup ID that are at most one
+// hour apart.
+//
+exports.getOrderProcessingDataForBackend = function(orderId, callback) {
+	var Order = mongoose.model('Order', orderSchema);
+	Order.findOne({ _id : orderId }, function(error, order) {
+		if (error || !order) {
+			callback(error, order);
+		} else {
+			Order.find({buddygroupId: order.buddygroupId}, function(error, buddygroupOrders) {
+				console.log(order);
+				if (error) {
+					callback(error);
+				} else {
+					// TODO timestamp
+					var buddygroupTotal = 0;
+					for (var i in buddygroupOrders) {
+						buddygroupTotal += buddygroupOrders[i].total;
+					}
+					callback(null, {
+						order: order,
+						buddygroupTotal: buddygroupTotal
+					});
+				}
+			});
+		}
+	});
 };
