@@ -1,36 +1,35 @@
 section#cart_items
-	div.container
-		div.table-responsive.cart_info
-			table.table.table-condensed
-				tr.cart_menu
-					td.image Item
-					td.description
-					td.price Price
-					td.quantity Quantity
-					td.total Total
-					td
-				for cartItem in cartItems
-					tr
-						td.cart_product
-							a
-								img(src=cartItem.imageUrl, width=110)
-						td.cart_description
-							h4
-								a(href='/details/' + cartItem._id) #{cartItem.name}
-							p Web ID: #{cartItem._id}
-						td.cart_price
-							p #{cartItem.price} €
-						td.cart_quantity
-							div.cart_quantity_button
-								a.cart_quantity_up +
-								input.cart_quantity_input(value=cartItem.quantity)
-								a.cart_quantity_down -
-						td.cart_total
-							p.cart_total_price #{cartItem.subTotal} €
-						td.cart_delete
-							a.cart_quantity_delete
-								i.fa.fa-times
-				else
-					tr
-						td(colspan=6)
-							| No items in cart
+	div.table-responsive.cart_info
+		table.table.table-condensed
+			tr.cart_menu
+				td.image Item
+				td.description
+				td.price Price
+				td.quantity Quantity
+				td.total Total
+				td
+			for cartItem in cartItems
+				tr
+					td.cart_product
+						a
+							img(src=cartItem.imageUrl, width=110)
+					td.cart_description
+						h4
+							a(href='/details/' + cartItem._id) #{cartItem.name}
+						p Web ID: #{cartItem._id}
+					td.cart_price
+						p #{cartItem.price} €
+					td.cart_quantity
+						div.cart_quantity_button(style="")
+							a.cart_quantity_up +
+							input.cart_quantity_input(value=cartItem.quantity)
+							a.cart_quantity_down -
+					td.cart_total
+						p.cart_total_price #{cartItem.subTotal} €
+					td.cart_delete
+						a.cart_quantity_delete
+							i.fa.fa-times
+			else
+				tr
+					td(colspan=6)
+						| No items in cart
