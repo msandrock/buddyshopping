@@ -56,11 +56,13 @@ header
     right: 0px;
     background-color: rgba(0, 0, 0, 0.5)
 
-buddyList()
+buddyList(w, d)
     background-color: #eee;
     position: fixed;
+    display: d;
     padding: 0 6px 6px 6px;
-    height: 400px
+    height: 400px;
+    width: w;
     -webkit-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
     -moz-box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
     box-shadow: -5px 5px 5px 4px rgba(0,0,0,0.18);
@@ -68,9 +70,7 @@ buddyList()
     right: 0;
 
 #buddyListClosed
-    buddyList()
-    display: block;
-    width: 20px;
+    buddyList(20px, block)
     h4
         -webkit-transform: rotate(270deg);
         -moz-transform: rotate(270deg);
@@ -81,9 +81,7 @@ buddyList()
         width: 130px;
 
 #buddyListOpen
-    buddyList()
-    display: none;
-    width: 240px;
+    buddyList(240px, none)
 
 #buddyMessages
     height: 320px;
@@ -96,7 +94,7 @@ buddyList()
 
 #messageText
     width: 230px;
-	
+
 #qrCodeContainer img
 	margin-top: 20px;
 	display: inline !important;
