@@ -3,33 +3,65 @@
 // Initialize event handlers for buddy list
 //
 $(function() {
+    // Expand the buddylist panel
     $('#openBuddyList').click(function(e) {
         buddyList.openList();
     });
 
+    // Collapse the buddylist panel
     $('#closeBuddyList').click(function(e) {
         buddyList.closeList();
     });
 
+    // Clear the buddylist message panel
     $('#clearBuddyList').click(function(e) {
         buddyList.clearContent();
     });
 
-    $('#postMessage').on('submit', function(e) {
+    // Open the bootbox to update the username
+    $('#userName').click(function(e){
+        bootbox.prompt("Geben Sie Ihren Benutzernamen ein", function(e) {
+            if(e != null && e != '') {
+                // Set the username caption
+                $('#userName').text(e);
+                // Store it in LS
+                if (typeof(localStorage) != 'undefined') {
+                    localStorage.setItem('userName', e);
+                }
 
+                // TODO: If in buddygroup, send it to the server, to update the session
+            }
+        });
+    });
+
+    // Add a new chat message to the message panel
+    $('#postMessage').on('submit', function(e) {
 		if($('#messageText').val() != "") {
 			var message = $('#messageText').val();
-			socket.emit( "chatMessage",{text: message});
+			socket.emit("chatMessage",{text: message});
 			buddyList.myChatMessage(message);
 			$('#messageText').val('');
 		}
-        
+
         return false;
     });
 
+    // Initialize the message panel from localstorage
     buddyList.loadContent();
+
+    // Try to grab the username from local storage; update the caption in the menu bar
+    if (typeof(localStorage) != 'undefined') {
+        var userName = localStorage.getItem('userName');
+
+        if(userName != null) {
+            $('#userName').text(userName);
+        }
+    }
 });
 
+//
+// Simple class to manage the buddy list contents
+//
 function BuddyList() {
 
     this.openList = function() {
@@ -111,12 +143,12 @@ function BuddyList() {
     this.goToCheckout = function(msg) {
         buddyList.addContent(this._goToCheckoutMessage(msg));
     }
-	
-		
+
+
 	this.handeChatMessage = function(msg) {
 		buddyList.addContent(this._chatMessage(msg));
 	}
-		
+
 	this.placeNewOrder = function(msg) {
 		buddyList.addContent(this._placeNewOrderMessage(msg));
 	}
@@ -129,8 +161,8 @@ function BuddyList() {
 
         localStorage.removeItem('listContent');
     };
-	
-	
+
+
 	this.myChatMessage = function(msgtext) {
 
         var wrapper = document.createElement('div');
@@ -214,13 +246,13 @@ function BuddyList() {
     }
 
 	this._placeNewOrderMessage = function(msg){
-		
+
 		var wrapper = document.createElement('span');
         var title = document.createTextNode("Ein Benutzer hat für " + msg.total + "€ eingekauft");
 
         wrapper.appendChild(title);
         return wrapper;
-		
+
 	}
 
 }
