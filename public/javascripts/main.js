@@ -23,12 +23,12 @@ $(document).ready(function(){
 			createSocket();
 
 		});
-		$popup.removeClass('fadeOutDown').addClass('animated fadeInUp').css('display', '');
+		$popup.removeClass('fadeOutUp').addClass('animated fadeInDown').css('display', '');
 		$mask.css('display', '');
 	});
 
 	$mask.click(function() {
-		$popup.removeClass('fadeInUp').addClass('animated fadeOutDown');
+		$popup.removeClass('fadeInDown').addClass('animated fadeOutUp');
 		$popup.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
 			$popup.css('display', 'none');
 		});
