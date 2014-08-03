@@ -24,7 +24,7 @@ router.post('/', function(req, res, next) {
 		res.redirect(req.referer || '/');
 	}
 	if (req.body.buddygroupId) {
-		data.joinBuddygroup(req.sessionID, req.body.buddygroupId, redirect);
+		data.joinBuddygroup(req.sessionID, req.body.buddygroupId, "Mark Zuckerberg" ,redirect);
 	} else {
 		redirect();
 	}

@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var crypto = require('crypto');
 var _ = require('underscore');
 var websocketsHandler = require('./websockets-handler');
+var randomNames = require('./random-names');
 
 var db = mongoose.connection;
 
@@ -14,7 +15,12 @@ var itemSchema = mongoose.Schema({
 });
 
 var buddygroupSchema = mongoose.Schema({
-	memberSessionIds : { type: [String], index: true }
+	memberSessions : [
+		mongoose.Schema({
+			memberSessionId: String,
+			name: String
+		})
+	]
 });
 
 var orderSchema = mongoose.Schema({
@@ -130,9 +136,15 @@ exports.ifIsBodyGroupJoined = function(sessionId, callback) {
 //
 // Joins a buddy group
 //
-exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
+exports.joinBuddygroup = function(sessionId, buddygroupId, username ,callback) {
+	
+	var currentMemberSession = {
+		memberSessionId: sessionId,
+		name: username
+	}
+	
 	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
-	Buddygroup.update({ memberSessionIds : sessionId }, {$pull: {memberSessionIds : sessionId}}, {}, function(error, numberAffected, rawResponse) {
+	Buddygroup.update({ 'memberSession.memberSessionId' : sessionId }, {$pull: {'memberSession.memberSessionId' : sessionId}}, {}, function(error, numberAffected, rawResponse) {
 		if (error) {
 			callback(error);
 		} else {
@@ -140,11 +152,12 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 				if (error) {
 					callback(error);
 				} else if (!data) {
-					Buddygroup.create({_id: buddygroupId, memberSessionIds: [sessionId]}, function(error, data) {
+					
+					Buddygroup.create({_id: buddygroupId, memberSessions: [currentMemberSession]}, function(error, data) {
 						callback(error);
 					});
 				} else if (_.indexOf(data.memberSessionIds, sessionId) == -1) {
-					Buddygroup.update({_id: buddygroupId}, {$push: {memberSessionIds: sessionId}}, {}, function(error, numberAffected, rawResponse) {
+					Buddygroup.update({_id: buddygroupId}, {$push: {memberSession: currentMemberSession}}, {}, function(error, numberAffected, rawResponse) {
 						callback(error);
 						if(!error) {
 							websocketsHandler.sendToGroup(buddygroupId, "joined", {text: "Ein Benutzer ist beigetreten"});
@@ -157,6 +170,10 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 		}
 	});
 };
+
+function getRandomName(){
+	return randomNames[Math.floor(Math.random()*randomNames.length)];
+}
 
 //
 // creates a new order
