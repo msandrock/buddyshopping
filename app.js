@@ -87,4 +87,5 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
-http.listen(1337);
+http.listen(config.global.port);
+console.log('Listening on port '+config.global.port);
