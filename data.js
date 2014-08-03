@@ -24,7 +24,8 @@ var orderSchema = mongoose.Schema({
     	quantity: Number,
     	linePrice: Number
 	})],
-	total : Number
+	total : Number,
+	buddygroupId : String,
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -163,4 +164,12 @@ exports.joinBuddygroup = function(sessionId, buddygroupId, callback) {
 exports.createOrder = function(data, callback) {
 	var Order = mongoose.model('Order', orderSchema);
 	Order.create(data, callback);
+};
+
+//
+// fetches an order
+//
+exports.getOrder = function(orderId, callback) {
+	var Order = mongoose.model('Order', orderSchema);
+	Order.findOne({ _id : orderId }, callback);
 };
