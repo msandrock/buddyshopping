@@ -4,11 +4,12 @@ var data = require('../data.js');
 var ipAddress = require('../ipaddress.js').ipAddress;
 var router = express.Router();
 
+//
+// Load the popup contents to start or join a buddy shopping session
+//
 router.get('/', function(req, res, next) {
-
 	// Update the user name in session
 	if(req.query.userName) {
-		console.log(req.query.userName);
 		req.session.userName = req.query.userName;
 	}
 
