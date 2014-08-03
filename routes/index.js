@@ -80,21 +80,34 @@ router.get('/cart', function(req, res) {
 // GET the checkout view
 //
 router.get('/checkout', function(req, res) {
+
 	// Get all cart items and return them to the view
+	var cartItems = cart.getCartItems(req.session);
+	// Get all corresponding items from the database
+	var ids = _.pluck(cartItems, 'itemId');
 
-	cartItems = cart.getCartItems(req.session);
+	var cartCount = cart.getItemCount(req.session);
 
-	// TODO: Get all cart items from the database
+	data.getItemsById(ids, function(err, items) {
+		// Add quantity from cart items
+		cartItems = _.map(items, function(item) {
+			// Find the cart items quantity
+			var cartItem = _.find(cartItems, function(i) { return i.itemId == item._id; })
+			// Construct a new object
+			return {
+				_id : item._id,
+				name : item.name,
+				description : item.description,
+				price : item.price,
+				imageUrl : item.imageUrl,
+				quantity : cartItem.quantity,
+				subTotal : item.price * cartItem.quantity
+			};
+		});
 
-	console.log(cartItems);
+		res.render('checkout', { title: 'Cart', cartItems: cartItems, cartCount: cartCount});
+	});
 
-   	cartItems = [];
-
-   	res.render('checkout', {
-		title: 'Cart',
-		cartItems: cartItems,
-		cartCount: cart.getItemCount(req.session),
-   	});
    	websocketsHandler.sendToGroupBySessionId(req.sessionID, "goToCheckout", {text : "Ein Benutzer geht zur Kasse"});
 
 });
