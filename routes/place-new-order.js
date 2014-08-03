@@ -34,6 +34,7 @@ router.post('/', function(req, res, next) {
     			next(error);
     		} else {
     			orderData.buddygroupId = buddygroupId;
+    			orderData.createdTimestamp = Math.floor(new Date().getTime() / 1000);
     			data.createOrder(orderData, function(error, orderDocument) {
     				if (error) {
     					next(error);

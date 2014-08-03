@@ -34,6 +34,7 @@ var orderSchema = mongoose.Schema({
 	})],
 	total : Number,
 	buddygroupId : { type: String, index: true },
+	createdTimestamp : Number
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
