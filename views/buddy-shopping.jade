@@ -4,6 +4,8 @@ div.container(style="width: 100%; padding-bottom: 40px; ")
 		| Give this code to your friends and get a discount:
 		button.btn#buddygroupIdPanelToggleButton
 			| QR Code
+		a.btn(href="#" onclick="fbshare('#{qrCodeUrl}')")
+			| Share on Facebook
 
 	div#buddygroupIdFormPanel.buddygroupIdPanel
 		div.well.well-lg(style="font-size: 200%; text-align: center")

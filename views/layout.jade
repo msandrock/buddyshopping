@@ -16,6 +16,8 @@ html
 			script(type='text/javascript', src='/javascripts/fastclick.js')
 			script(type='text/javascript', src='/javascripts/bootstrap.min.js')
 			script(type='text/javascript', src='/javascripts/buddylist.js')
+			script(type='text/javascript', src='/javascripts/jquery.plugin.min.js')
+			script(type='text/javascript', src='/javascripts/jquery.countdown.min.js')
 			script(type='text/javascript').
 				// Enable fastclick. This must happen on-ready, but before registering other click handlers.
 				$(function() {
@@ -32,14 +34,10 @@ html
 		header#header
 			div.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
 				div.container
-					div.navbar-header
+					div.navbar-header 
 						a.navbar-brand(href="/")
-							| BuddyShopping
-						if discountTimeLeft > 0
-							div.navbar-brand(style="font-size: 70%; margin-top: -10px")
-								| BuddyShopping discount active
-								br
-								| TIMER #{discountTimeLeft}
+							| BuddyShopping 
+
 						button.navbar-toggle(type="button", data-toggle="collapse", data-target="#header-navbar-collapse")
 							span.sr-only
 								| Toggle navigation
@@ -50,8 +48,14 @@ html
 					div.navbar-collapse.collapse#header-navbar-collapse
 						ul.nav.navbar-nav.navbar-right
 							li
-								button#buddyShoppingButton
-									| Start / join session
+								if discountTimeLeft > 0
+									button#buddyShoppingButton
+										| noch 
+										#countdown
+								else
+									button#buddyShoppingButton
+										| Start / join session
+
 							li
 								a#userName(href='#') Username
 							li
@@ -90,3 +94,5 @@ html
 
 		script(type='text/javascript', src='/javascripts/main.js')
 		script(type='text/javascript', src='/javascripts/chat.js')
+		script.
+			var discountTimeLeft = #{discountTimeLeft};

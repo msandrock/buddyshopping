@@ -36,6 +36,12 @@ $(document).ready(function(){
 	});
 
 
+	$('#countdown').countdown({
+		until: discountTimeLeft,
+		format: 'yowdhMS',
+		layout: '{hnn}{sep}{mnn}{sep}{snn}'
+	});
+
 });
 
 function createSocket(){
@@ -79,3 +85,9 @@ function createSocket(){
 		buddyList.handeChatMessage(msg);
 	});
 }
+
+function fbshare(link){
+	var sharer = "https://www.facebook.com/sharer/sharer.php?u=";
+	window.open(sharer + link,'sharer', 'width=626,height=436');
+}
+
