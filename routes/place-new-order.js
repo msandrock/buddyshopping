@@ -29,11 +29,13 @@ router.post('/', function(req, res, next) {
     		items: orderItems,
     		total: orderTotal
     	};
-    	data.getBuddygroupId(req.session,req.sessionID, function(error, buddygroupId) {
+		
+    	data.getBuddygroupId(req.session,req.sessionID, undefined, function(error, buddygroupId) {
     		if (error) {
     			next(error);
     		} else {
     			orderData.buddygroupId = buddygroupId;
+    			orderData.createdTimestamp = Math.floor(new Date().getTime() / 1000);
     			data.createOrder(orderData, function(error, orderDocument) {
     				if (error) {
     					next(error);

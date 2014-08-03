@@ -35,6 +35,11 @@ html
 					div.navbar-header
 						a.navbar-brand(href="/")
 							| BuddyShopping
+						if discountActive
+							div.navbar-brand(style="font-size: 70%; margin-top: -10px")
+								| BuddyShopping discount active
+								br
+								| TIMER
 						button.navbar-toggle(type="button", data-toggle="collapse", data-target="#header-navbar-collapse")
 							span.sr-only
 								| Toggle navigation
@@ -44,6 +49,9 @@ html
 
 					div.navbar-collapse.collapse#header-navbar-collapse
 						ul.nav.navbar-nav.navbar-right
+							li
+								button#buddyShoppingButton
+									| Start / join session
 							li
 								a#userName(href='#') Username
 							li
@@ -62,14 +70,10 @@ html
 
 		block content
 
-		div(style="position: relative")
+		div
 			div#buddyShoppingPopup(style="display: none;")
 
 		div#buddyShoppingPopupMask(style="display: none;")
-
-		div#buddyShoppingButtonContainer(style="margin-top: 20px;")
-			button#buddyShoppingButton.btn.btn-block
-				| Buddy Shopping
 
 		div#buddyListOpen
 			h4 My buddys&nbsp;

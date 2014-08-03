@@ -34,6 +34,7 @@ var orderSchema = mongoose.Schema({
 	})],
 	total : Number,
 	buddygroupId : { type: String, index: true },
+	createdTimestamp : Number
 });
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -215,6 +216,22 @@ function getRandomName(){
 }
 
 //
+// Fetches information about an active buddygroup discount, if any
+//
+exports.getActiveBuddygroupDiscount = function(sessionId, callback) {
+	var Buddygroup = mongoose.model('Buddygroup', buddygroupSchema);
+	Buddygroup.findOne({ "memberSessions.memberSessionId" : sessionId }, function(error, data) {
+		var now = new Date().getTime() / 1000;
+		if (error || !data || data.discountEndTimestamp < now) {
+			callback(error, null);
+		} else {
+			callback(null, {endTimestamp: data.discountEndTimestamp});
+		}
+	});
+}
+
+
+//
 // creates a new order
 //
 exports.createOrder = function(inputOrderData, callback) {
@@ -278,7 +295,11 @@ exports.getOrderProcessingDataForBackend = function(orderId, callback) {
 					// TODO timestamp
 					var buddygroupTotal = 0;
 					for (var i in buddygroupOrders) {
-						buddygroupTotal += buddygroupOrders[i].total;
+						var otherOrder = buddygroupOrders[i];
+						var timestampDelta = Math.abs(order.createdTimestamp - otherOrder.createdTimestamp);
+						if (timestampDelta < 3600) {
+							buddygroupTotal += otherOrder.total;
+						}
 					}
 					callback(null, {
 						order: order,
